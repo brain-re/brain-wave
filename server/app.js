@@ -10,7 +10,8 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-mongoose.connect("mongodb://client:client@mongo:27017/MEAN", {}, (err) => {
+
+mongoose.connect("mongodb://admin_MEAN:5698741@mongo:27017/MEAN_FR", {}, (err) => {
   if (err) {
     console.log(err);
   } else {

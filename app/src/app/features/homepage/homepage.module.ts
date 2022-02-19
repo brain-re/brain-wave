@@ -8,12 +8,7 @@ const APP_HOMEPAGE_ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    HomepageComponent
-  ],
-  imports: [
-    SharedModule,
-    RouterModule.forChild(APP_HOMEPAGE_ROUTES),
-  ]
+  declarations: [HomepageComponent],
+  imports: [SharedModule, RouterModule.forChild(APP_HOMEPAGE_ROUTES)],
 })
 export class HomepageModule { }

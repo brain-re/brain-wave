@@ -20,7 +20,7 @@ var awesome_instance = new categories ({ name: 'haute technologie', description:
 awesome_instance.save();
 */
 
-var ProductsSchema = new Schema({
+const ProductsSchema = new Schema({
   name : { type : String, required : [true, 'Un produit à besoin d\'un nom']},
   description : { type : String, required : [true, 'Un produit à besoin d\'une description']},
   price : { type : Number, required : [true, 'Un produit à besoin d\'un prix']}, 
@@ -28,14 +28,21 @@ var ProductsSchema = new Schema({
   images : { type : [String]},
 });
 
-var Products = mongoose.model('Products', ProductsSchema );
+ProductsSchema.query.byName = function(name) {
+  return this.where({ "name": new RegExp(name, 'i') })
+};
+
+const Products = mongoose.model('Products', ProductsSchema );
 
 router.get("/", (req, res) => {
-
-  var awesome_instance = new Products ({ name: 'rasoir K2000', description: 'rasoir de sureté', price: '201', categories: ['62104a0bcf8e17045d4b08ea', '62104a0bcf8e17045d4b08ec']});
-  awesome_instance.save();
-
-  res.end()
+  let search = req.query.search;
+  Products.find().byName(search).exec((err, data) => {
+      console.log(data);
+      res.status(200).json(data);
+      res.end()
+    }
+  );
 });
+
 
 module.exports = router;

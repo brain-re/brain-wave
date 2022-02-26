@@ -16,33 +16,18 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   public fetchProducts(): Observable<IProduct[]> {
-    return of(ProductFixtures.load()).pipe(
-      tap((products$: IProduct[]) => {
-        console.log(products$);
-        this.products$.next(products$);
-       })
-    );
-      /**this.http.get<IProduct[]>(`${HTTP_API}products`)
-         .pipe(
-           tap((products$: IProduct[]) => {
-            this.products$.next(products$);
-           })
-        );
-      */
+    return this.http.get<IProduct[]>(`${HTTP_API}products`)
+        .pipe(
+          tap((products$: IProduct[]) => {
+          this.products$.next(products$);
+        })
+      );
   }
 
   public searchProducts(search: string) {
-      this.fetchProducts().pipe(
-        map((products: IProduct[]) => products.filter(
-          (product: IProduct) => {
-            let regex = new RegExp(search);
-            return (regex.test(product.name) || regex.test(product.description));
-          })
-        )
-      )
+      this.http.get<IProduct[]>(`${HTTP_API}products?search=${search}`)
       .subscribe((value) => {
         this.products$.next(value);
-      })
-      .unsubscribe();
+      });
   }
 }

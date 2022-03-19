@@ -1,13 +1,25 @@
-Liste des produits
+<mat-toolbar>
+  Liste des produits
+</mat-toolbar>
+<form (ngSubmit)="submit()" [formGroup]="form" class="mt-20">
+  <input matInput (input)="search($event)" type="text">
+  <button mat-icon-button [disabled]="form.invalid" color="primary">
+    <mat-icon>search</mat-icon>
+  </button>
+</form>
+<mat-list class="mb-20 list-primary">
+  <mat-list-item class="mb-20" *ngFor="let product of products$ | async">
+    <div *ngFor="let image of product.images">
+      <img [src]="image">
+    </div>
+    <p>
+      <u>{{product.name}}</u> - {{product.description}}<br>
+      <span *ngFor="let cat of product.categories" color="primary">#{{cat.name}}</span>
+    </p>
+  <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>
 
-<input (input)="search($event)">
-
-<div *ngFor="let product of products$ | async">
-  <h2>{{product.name}}</h2><br>
-  <p>{{product.description}}</p><br>
-  Categories : [<span *ngFor="let cat of product.categories">#{{cat.name}}</span>]
-  <div *ngFor="let image of product.images">
-    <img [src]="image">
-  </div>
-  =======================================================================
-</div>
+<button mat-fab routerLink="/" color="primary">
+  <mat-icon>keyboard_return</mat-icon>
+</button>

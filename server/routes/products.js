@@ -1,10 +1,9 @@
 const router = require("express").Router();
-const { ExplainVerbosity } = require("mongodb");
 const mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
 
-var categoriesSchema = new Schema({
+const categoriesSchema = new Schema({
   name : { type : String, unique: true, required : [true, 'Un produit à besoin d\'un nom'] },
   description : { type : String, required : [true, 'Un produit à besoin d\'une description'] },
 })
@@ -24,24 +23,42 @@ const ProductsSchema = new Schema({
   name : { type : String, required : [true, 'Un produit à besoin d\'un nom']},
   description : { type : String, required : [true, 'Un produit à besoin d\'une description']},
   price : { type : Number, required : [true, 'Un produit à besoin d\'un prix']}, 
-  categories : { type: [Schema.Types.ObjectId], ref: 'categories', required : [true, 'Ceci n\'est pas une categorie valide']},
+  categories : [{ type: Schema.Types.ObjectId, ref: 'categories', required : [true, 'Ceci n\'est pas une categorie valide']}],
   images : { type : [String]},
 });
 
 ProductsSchema.query.byName = function(name) {
-  return this.where({ "name": new RegExp(name, 'i') })
+  return this.where({ "name": new RegExp(name, 'i')})
 };
 
-const Products = mongoose.model('Products', ProductsSchema );
+const products = mongoose.model('Products', ProductsSchema );
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   let search = req.query.search;
-  Products.find().byName(search).exec((err, data) => {
-      console.log(data);
+  products.find().byName(search).populate('categories').exec(
+    (err, data) => {
       res.status(200).json(data);
       res.end()
     }
   );
+  // await products.find().exec(async (err, _products) => {
+  //   console.log('1');
+  //   const __final_products = await Promise.all(
+  //     _products.map(async (product) => {
+  //       console.log('2');
+  //       await categories.find({'_id' : product.categories}, (err, categories) => {
+  //         product.categories = [];
+  //         product.categories.push(...categories)
+  //       });
+  //       console.log('3');
+  //       return product;
+  //     })
+  //   );
+  //   console.log(__final_products);
+  //   console.log('4');
+  //   res.status(200).json(__final_products);
+  //   res.end()
+  // });  
 });
 
 

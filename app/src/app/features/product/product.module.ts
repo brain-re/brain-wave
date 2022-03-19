@@ -18,7 +18,7 @@ const APP_PRODUCT_ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [ProductContainerComponent],
+  declarations: [ProductContainerComponent, ProductDetailsComponent],
   imports: [SharedModule, RouterModule.forChild(APP_PRODUCT_ROUTES)],
 })
 export class ProductModule {}

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { IProduct } from 'src/app/logic/interfaces/product.interface';
 import { ProductService } from 'src/app/shared/services/product.service';
@@ -11,6 +12,7 @@ import { ProductService } from 'src/app/shared/services/product.service';
 export class ProductDetailsComponent implements OnInit {
 
   public products$: BehaviorSubject<IProduct[]>
+  public form: FormGroup = new FormGroup({})
 
   constructor(private productService: ProductService) {}
 
@@ -24,5 +26,11 @@ export class ProductDetailsComponent implements OnInit {
     let input = searchEvent.target as HTMLInputElement;
     let search = input.value;
     this.productService.searchProducts(search);
+  }
+
+  public submit(): void {
+    if (this) {
+
+    }
   }
 }

@@ -1,11 +1,9 @@
 const router = require("express").Router();
-const cookieParser = require("cookie-parser");
-const { ExplainVerbosity, OrderedBulkOperation } = require("mongodb");
 const mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
 
-var categoriesSchema = new Schema({
+const categoriesSchema = new Schema({
   name : { type : String, unique: true, required : [true, 'Un produit à besoin d\'un nom'] },
   description : { type : String, required : [true, 'Un produit à besoin d\'une description'] },
 })
@@ -20,11 +18,11 @@ var awesome_instance = new categories ({ name: 'outils de soin', description: 'r
 var awesome_instance = new categories ({ name: 'haute technologie', description: 'smartphone, tablette etc....'});
 //awesome_instance.save();
 
-var ProductsSchema = new Schema({
+const ProductsSchema = new Schema({
   name : { type : String, required : [true, 'Un produit à besoin d\'un nom']},
   description : { type : String, required : [true, 'Un produit à besoin d\'une description']},
   price : { type : Number, required : [true, 'Un produit à besoin d\'un prix']}, 
-  categories : { type: [Schema.Types.ObjectId], ref: 'categories', required : [true, 'Ceci n\'est pas une categorie valide']},
+  categories : [{ type: Schema.Types.ObjectId, ref: 'categories', required : [true, 'Ceci n\'est pas une categorie valide']}],
   images : { type : [String]},
   createdAt : {
     type: Date,
@@ -32,7 +30,7 @@ var ProductsSchema = new Schema({
   },
 });
 
-var Products = mongoose.model('Products', ProductsSchema );
+const Products = mongoose.model('Products', ProductsSchema );
 
 router.get("/", (req, res) => {
   if (req.query.search === undefined) {

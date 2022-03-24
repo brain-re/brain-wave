@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/modules/shared.module';
-import { ProductDetailsComponent } from './product-container/product-details/product-details.component';
 import { ProductContainerComponent } from './product-container/product-container.component';
+import { ProductListComponent } from './product-container/product-list/product-list.component';
 
 const APP_PRODUCT_ROUTES: Routes = [
   {
@@ -11,14 +11,14 @@ const APP_PRODUCT_ROUTES: Routes = [
     children: [
       {
         path: ':product',
-        component: ProductDetailsComponent,
+        component: ProductListComponent,
       },
     ],
   },
 ];
 
 @NgModule({
-  declarations: [ProductContainerComponent, ProductDetailsComponent],
+  declarations: [ProductContainerComponent, ProductListComponent],
   imports: [SharedModule, RouterModule.forChild(APP_PRODUCT_ROUTES)],
 })
 export class ProductModule {}

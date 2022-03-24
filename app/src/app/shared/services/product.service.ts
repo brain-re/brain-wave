@@ -14,21 +14,21 @@ export class ProductService {
   public products$: BehaviorSubject<IProduct[]> = new BehaviorSubject(null);
 
   constructor(private http: HttpClient) {}
-
+  
   public fetchProducts(): Observable<IProduct[]> {
-    return of(ProductFixtures.load()).pipe(
+    /*return of(ProductFixtures.load()).pipe(
       tap((products$: IProduct[]) => {
         console.log(products$);
         this.products$.next(products$);
        })
-    );
-      /**this.http.get<IProduct[]>(`${HTTP_API}products`)
+    );*/
+    return this.http.get<IProduct[]>(`${HTTP_API}products/`)
          .pipe(
            tap((products$: IProduct[]) => {
             this.products$.next(products$);
            })
         );
-      */
+    
   }
 
   public searchProducts(search: string) {

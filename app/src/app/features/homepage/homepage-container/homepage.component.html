@@ -1,0 +1,13 @@
+<p>HOMEPAGE</p>
+<br />
+
+<a [routerLink]="['products']">Liste des produits</a>
+
+<div *ngIf="foo">
+  express work ! <br>
+  foo : {{foo}}
+</div>
+<div *ngIf="!foo">
+  express server did not respond !<br />
+  See console for errors.
+</div>

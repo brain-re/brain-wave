@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+    angular:
+        build: 
+            context: ./app
+            dockerfile: Dockerfile
+        ports: 
+            - 4200:4200
+            - 49153:49153
+        volumes:
+            - type: bind
+              source: ./app/src
+              target: /usr/app/src
+    express:
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+        ports: 
+            - 80:3000
+        volumes:
+            - type: bind
+              source: ./public
+              target: /express/public
+            - type: bind
+              source: ./server/models
+              target: /express/models
+            - type: bind
+              source: ./server/routes
+              target: /express/routes
+            - type: bind
+              source: ./server/app.js
+              target: /express/app.js
+        depends_on: 
+            - angular
+    mongo:
+        image: mongo
+        restart: always
+        ports:
+            - 27017:27017
+        volumes: 
+            - type: volume
+              source: mongo_db
+              target: /data/db
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: example
+
+volumes: 
+    mongo_db:
+        external: true

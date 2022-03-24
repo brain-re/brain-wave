@@ -1,0 +1,13 @@
+Liste des produits
+
+<input (input)="search($event)">
+
+<div *ngFor="let product of products$ | async">
+  <h2>{{product.name}}</h2><br>
+  <p>{{product.description}}</p><br>
+  Categories : [<span *ngFor="let cat of product.categories">#{{cat.name}}</span>]
+  <div *ngFor="let image of product.images">
+    <img [src]="image">
+  </div>
+  =======================================================================
+</div>

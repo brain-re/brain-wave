@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser");
 const { ExplainVerbosity, OrderedBulkOperation } = require("mongodb");
 const mongoose = require("mongoose");
 
+
 var Schema = mongoose.Schema;
 
 var categoriesSchema = new Schema({
@@ -44,9 +45,11 @@ router.get("/", (req, res) => {
   async function run_search(){
     search_product = req.query.search
     //The part below permit to insensitive the query
-    const regex = new RegExp(search_product, 'i')
+    console.log(search_product)
+    const s = search_product
+    const regex = new RegExp(s, 'i')
     const product = await Products.find({ $or: [{ name : {$regex: regex}},{ description : {$regex: regex}} ]}).populate("categories")
-    res.json(product)
+    res.send(product)
     res.end()
   }
 
@@ -61,7 +64,7 @@ router.get("/", (req, res) => {
     await create_product.save().then(() => console.log("user saved"));
     */
     const product = await Products.find().sort({ _id: -1 }).limit(100).populate("categories")
-    res.json(product)
+    res.send(product)
     res.end()
     }
 });

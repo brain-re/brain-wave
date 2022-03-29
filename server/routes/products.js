@@ -1,36 +1,7 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
-
-var Schema = mongoose.Schema;
-
-const categoriesSchema = new Schema({
-  name : { type : String, unique: true, required : [true, 'Un produit à besoin d\'un nom'] },
-  description : { type : String, required : [true, 'Un produit à besoin d\'une description'] },
-})
-
-var categories = mongoose.model('categories', categoriesSchema );
-var awesome_instance = new categories ({ name: 'electromenager', description: 'machine à laver, lave vaiselle etc...'});
-//awesome_instance.save();
-var awesome_instance = new categories ({ name: 'meuble', description: 'commode, étagere etc...'});
-//awesome_instance.save();
-var awesome_instance = new categories ({ name: 'outils de soin', description: 'rasoir, creme, gel douche etc...'});
-//awesome_instance.save();
-var awesome_instance = new categories ({ name: 'haute technologie', description: 'smartphone, tablette etc....'});
-//awesome_instance.save();
-
-const ProductsSchema = new Schema({
-  name : { type : String, required : [true, 'Un produit à besoin d\'un nom']},
-  description : { type : String, required : [true, 'Un produit à besoin d\'une description']},
-  price : { type : Number, required : [true, 'Un produit à besoin d\'un prix']}, 
-  categories : [{ type: Schema.Types.ObjectId, ref: 'categories', required : [true, 'Ceci n\'est pas une categorie valide']}],
-  images : { type : [String]},
-  createdAt : {
-    type: Date,
-    default: () => Date.now(),
-  },
-});
-
-const Products = mongoose.model('Products', ProductsSchema );
+const Products = require("../models/products.model");
+const categories = require("../models/categories.model");
 
 router.get("/", (req, res) => {
   if (req.query.search === undefined) {
@@ -49,19 +20,23 @@ router.get("/", (req, res) => {
   }
 
   async function run_100_last(){
-    /*
-    const create_product = new Products ({ 
-      name: 'KESSER® Table de Buffet Table Pliante en Plastique 183x76 cm Table de Camping Table de fête Table Pliante', 
-      description: 'Grâce à sa poignée de transport, à son faible poids ainsi qu à la fonction pliante, la table est facile à transporter et se range dans tous les coffres de voiture.', 
-      price: '84.70', 
-      categories: ['62350bb28a904301b1d1eee3'],
-    });
-    await create_product.save().then(() => console.log("user saved"));
-    */
     const product = await Products.find().sort({ _id: -1 }).limit(100).populate("categories")
     res.json(product)
     res.end()
-    }
+  }
+});
+
+router.post("/create", (req, res) => {
+  const products_json = JSON.parse(JSON.stringify(req.body));
+  const create_product = new Products ({
+    name: products_json['name'],
+    description: products_json['description'],
+    price: products_json['price'],
+    categories: products_json['categories'],
+    images: products_json['images'],
+    });
+    create_product.save().then(() => console.log("user created"));
+  res.end()
 });
 
 

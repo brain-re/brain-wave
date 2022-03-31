@@ -20,3 +20,4 @@ var awesome_instance = new categories ({ name: 'haute technologie', description:
 const categories = mongoose.model('categories', categoriesSchema );
 
 module.exports = categories;
+

@@ -27,14 +27,14 @@ router.get("/", (req, res) => {
 });
 
 router.post("/create", (req, res) => {
-  const create_product = new Products ({
+  const create_products = new Products ({
     name: req.body['name'],
     description: req.body['description'],
     price: req.body['price'],
     categories: req.body['categories'],
     images: req.body['images'],
     });
-    create_product.save().then(() => console.log("user created"));
+    create_products.save().then(() => console.log("prouduct created"));
   res.end()
 });
 

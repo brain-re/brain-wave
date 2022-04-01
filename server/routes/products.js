@@ -34,7 +34,7 @@ router.post("/create", (req, res) => {
     categories: req.body['categories'],
     images: req.body['images'],
     });
-    create_products.save().then(() => console.log("prouduct created"));
+    create_products.save().then(() => console.log("product created"));
   res.end()
 });
 

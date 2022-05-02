@@ -31,6 +31,7 @@ export class ProductListComponent implements OnInit {
   }
 
   get search() {
+    console.log(this.productSearchForm.get('search'));
     return this.productSearchForm.get('search');
   }
 

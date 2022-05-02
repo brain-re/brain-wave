@@ -38,15 +38,15 @@ export abstract class BaseFormBuilder extends FormBuilder {
     return form;
   }
 
-  protected subscribeValueChange(form, submit): void
+  protected subscribeValueChange(form: FormGroup, submit: CallableFunction): void
   {
     form.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(_ => {
 
-      if (!this._form.valid) {
+      if (!form.valid) {
         // The form is not valid, update message errors.
-        this.updateErrorMessages();
+        this.updateErrorMessages(form);
       }
 
       return submit(form) // The form is valid, submit the query
@@ -57,11 +57,11 @@ export abstract class BaseFormBuilder extends FormBuilder {
    * Update error violation into translated error messages.
    * @returns ValidationsErrors Errors foreach control of the form.
    */
-  private updateErrorMessages(): void
+  private updateErrorMessages(form: FormGroup): void
   {
     let errors: ValidationErrors = [];
-    Object.keys(this._form.controls).forEach(key => {
-      let control:AbstractControl = this._form.get(key);
+    Object.keys(form.controls).forEach(key => {
+      let control:AbstractControl = form.get(key);
       // Check if control has error
       if (!control.hasError) {
         return; // There is no error, continue to next control of this form

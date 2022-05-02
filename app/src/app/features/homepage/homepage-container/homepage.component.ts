@@ -8,22 +8,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./homepage.component.scss'],
 })
 export class HomepageComponent implements OnInit, OnDestroy {
-  public subscription: Subscription = new Subscription();
-  public foo: string;
-  constructor(private http: HttpClient) {}
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-    this.subscription = this.http.get<string>('/api/sample/foo').subscribe(
-      (response: string) => {
-        this.foo = response;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 }

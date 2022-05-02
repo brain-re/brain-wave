@@ -21,10 +21,7 @@ export class ProductService {
         this.http.get<IProduct[]>(`${HTTP_API}products?search=${search}`)
       ),
       tap(data => {
-        console.log(data);
-        // data.subscribe((value) => {
-        //   this.products$.next(value);
-        // });
+        this.products$.next(data);
       })
     ).subscribe();
   }

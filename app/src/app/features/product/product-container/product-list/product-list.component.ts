@@ -16,9 +16,7 @@ export class ProductListComponent implements OnInit {
   constructor(
     private productSearchFormBuilder: ProductSearchFormBuilder,
     private productService: ProductService
-  ) {
-    this.productSearchFormBuilder.submit = this.submit;
-  }
+  ) {}
 
   ngOnInit(): void {
     this.products$ = this.productService.products$;
@@ -28,6 +26,7 @@ export class ProductListComponent implements OnInit {
   }
 
   initForm() {
+    this.productSearchFormBuilder.withSubmit((_form) => {this.submit(_form)});
     this.productSearchForm = this.productSearchFormBuilder.build();
   }
 
@@ -37,12 +36,10 @@ export class ProductListComponent implements OnInit {
 
   submit(form: FormGroup): void
   {
-    if (!this.productSearchForm || this.productSearchForm.valid) {
+    if (!form || !form.valid) {
       return null;
     }
 
-    if (this.productSearchForm.valid) {
-      this.productService.searchProducts(this.productSearchForm.value);
-    }
+    this.productService.searchProducts(form.value);
   }
 }

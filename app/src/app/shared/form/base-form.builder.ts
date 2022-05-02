@@ -4,36 +4,52 @@ import { debounceTime } from "rxjs/operators";
 export abstract class BaseFormBuilder extends FormBuilder {
 
   constructor(
-    public _form: FormGroup
+    protected _form: FormGroup,
+    protected _submit: CallableFunction
   ) {
     super();
   }
 
+  public withSubmit(submit: CallableFunction): void
+  {
+    this._submit = submit;
+  }
+
+  /**
+   * Build current _form form with given data.
+   * @param data
+   * @returns
+   */
   protected build(data: Object = {}): FormGroup
   {
     if (!this._form) {
       // If the child class have not initialized the _form, do it with given data.
-      this.group(data);
+      this._form = this.group(data);
     }
 
-    // Initialize default behavior for value change event.
-    this.subscribeValueChange();
+    let submit = this._submit;
+    let form = this._form;
 
-    return this._form;
+    // Initialize default behavior for value change event.
+    this.subscribeValueChange(form, submit);
+
+    this.reset();
+
+    return form;
   }
 
-  protected subscribeValueChange(): void
+  protected subscribeValueChange(form, submit): void
   {
-    this._form.valueChanges.pipe(
+    form.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(_ => {
 
-      if (this._form.valid) {
-        return this.submit(this._form) // The form is valid, submit the query
+      if (!this._form.valid) {
+        // The form is not valid, update message errors.
+        this.updateErrorMessages();
       }
 
-      // The form is not valid, update message errors.
-      this.updateErrorMessages();
+      return submit(form) // The form is valid, submit the query
     });
   }
 
@@ -102,6 +118,15 @@ export abstract class BaseFormBuilder extends FormBuilder {
   }
 
   /**
+   * Reset every data for this builder.
+   */
+  private reset(): void
+  {
+    this._form = this.group({});
+    this._submit = () => { throw new Error("Submit not implemented."); };
+  }
+
+  /**
    * Define error messages here indexed for each locales.
    *
    * Exemple :
@@ -114,10 +139,4 @@ export abstract class BaseFormBuilder extends FormBuilder {
    * }
    */
   protected abstract getErrorMessages() : {[field: string]: {[messageKey: string]: {[locale:string]: string}}};
-
-  /**
-   * Any callback function which should be executed
-   * when values change.
-   */
-  protected abstract submit(form: FormGroup) : void;
 }

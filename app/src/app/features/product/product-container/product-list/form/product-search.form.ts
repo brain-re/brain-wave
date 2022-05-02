@@ -9,9 +9,9 @@ import { BaseFormBuilder } from "src/app/shared/form/base-form.builder";
 })
 export class ProductSearchFormBuilder extends BaseFormBuilder {
 
-  build(data: ISearchProduct = {search: ''}): FormGroup
+  public build(data: ISearchProduct = {search: ''}): FormGroup
   {
-    this._form = this.group({
+    return super.build({
       search: [
         data.search,
         [
@@ -20,8 +20,6 @@ export class ProductSearchFormBuilder extends BaseFormBuilder {
         ]
       ]
     });
-
-    return super.build(data);
   }
 
   public getErrorMessages()
@@ -38,7 +36,7 @@ export class ProductSearchFormBuilder extends BaseFormBuilder {
     }
   }
 
-  public submit(form: FormGroup): void {
+  protected submit(form: FormGroup): void {
     throw new Error("Method not implemented.");
   }
 }

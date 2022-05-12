@@ -1,10 +1,13 @@
 <mat-toolbar>
   Liste des produits
 </mat-toolbar>
-<form [formGroup]="productSearchForm" class="mt-20">
-  <mat-form-field *ngIf="search" appearance="fill">
+<form [formGroup]="productSearchForm" class="mt-20" [style]="search.pristine?'':'display: flex;'">
+  <mat-form-field *ngIf="search" appearance="fill" style="flex: 1;">
     <mat-label>Search something cool 🚀</mat-label>
-    <input matInput formControlName="search" type="text"/>
+    <input matInput formControlName="search" type="text"
+      (change)="onSearchChange($event)"
+      (click)="onClick($event)"
+    />
     <div *ngFor="let err of search?.errors | keyvalue">
       <mat-error *ngIf="err.value | IsString">{{ err.value }}</mat-error>
     </div>

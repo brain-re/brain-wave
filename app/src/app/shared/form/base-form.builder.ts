@@ -10,9 +10,10 @@ export abstract class BaseFormBuilder extends FormBuilder {
     super();
   }
 
-  public withSubmit(submit: CallableFunction): void
+  public withSubmit(submit: CallableFunction): this
   {
     this._submit = submit;
+    return this;
   }
 
   /**
@@ -68,6 +69,7 @@ export abstract class BaseFormBuilder extends FormBuilder {
       }
       errors[key] = control.errors;
     });
+
 
     // Translate the error messages...
     this.translateErrorMessage(errors);

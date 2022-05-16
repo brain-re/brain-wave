@@ -258,3 +258,13 @@ input.ng-valid.ng-touched {
 .d2 {
   border: 1px solid green;
 }
+
+.form-big {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.field-big {
+  width: 100%;
+}

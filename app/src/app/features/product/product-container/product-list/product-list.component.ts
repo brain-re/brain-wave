@@ -26,8 +26,7 @@ export class ProductListComponent implements OnInit {
   }
 
   initForm() {
-    this.productSearchForm = this.productSearchFormBuilder.withSubmit((_form: FormGroup) => {this.submit(_form)})
-                                                          .build();
+    this.productSearchForm = this.productSearchFormBuilder.withSubmit((_form: FormGroup) => {this.submit(_form)}).build();
   }
 
   get search(): AbstractControl|null {

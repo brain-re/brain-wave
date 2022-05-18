@@ -31,8 +31,17 @@ router.post("/create", (req, res) => {
       name: req.body['name'],
       description: req.body['description'],
       });
-      create_categories.save().then(() => console.log("categories created"));
-    res.end();
+      create_categories.save(function(err){
+        if (err) {
+          console.log(err);
+          res.send(400, 'Bad Request or categories already exist')
+          res.end()
+        }
+        else{
+          res.json("[+]categories created")
+          res.end()
+        }
+      })
 });
 
 

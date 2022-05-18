@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
   lastname: {type: String, required: true},
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: [{ type: Schema.Types.ObjectId, ref: 'roles', required : [true, 'Ceci n\'est pas un role valide']}],
+  roles: [{ type: Schema.Types.ObjectId, ref: 'roles', required : [true, 'Ceci n\'est pas un role valide']}],
 });
 
 //userSchema.plugin(uniqueValidator);

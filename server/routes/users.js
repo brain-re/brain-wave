@@ -6,7 +6,8 @@ const roles = require("../models/roles.model")
 const bcrypt = require('bcrypt');
 const { db, validate } = require("../models/users.model");
 const saltRounds = 10;
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { use } = require('./token');
 
 console.log(dotenv)
 //send JWT for authenticate Users
@@ -47,14 +48,23 @@ router.post("/create", (req, res) => {
     bcrypt.hash(req.body['password'], saltRounds, function(err, hash) {
         console.log(hash)
         const create_users = new users ({
-            firstname: req.body['firstname'],
-            lastname: req.body['lastname'],
-            email: req.body['email'],
-            role: req.body['role'],
-            password: hash,
-            });
-            create_users.save().then(() => console.log("users created"));
+          firstname: req.body['firstname'],
+          lastname: req.body['lastname'],
+          email: req.body['email'],
+          roles: req.body['role'],
+          password: hash,
+          });
+        create_users.save(function(err){
+          if (err) {
+            console.log(err);
+            res.send(400, 'Bad Request or user already exist')
             res.end()
+          }
+          else{
+            res.json("[+]User created")
+            res.end()
+          }
+        })
     });
 });
 

@@ -5,6 +5,10 @@ button.active {
   border: solid 2px #444;
 }
 
+.action {
+  color: #c2b919;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
@@ -52,6 +56,12 @@ body {
   display: block;
   margin: auto;
   padding: 20px;
+}
+
+.d-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, 1fr);
 }
 
 .d-flex {
@@ -267,4 +277,13 @@ input.ng-valid.ng-touched {
 
 .field-big {
   width: 100%;
+}
+
+mat-card-header > .mat-card-header-text {
+  margin: 0;
+}
+
+.mat-fab.bottom {
+  position: absolute;
+  bottom: 10px;
 }

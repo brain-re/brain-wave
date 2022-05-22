@@ -30,8 +30,16 @@ router.post("/create", (req, res) => {
       rights: req.body['rights'],
       role_name: req.body['role_name'],
       });
-      create_roles.save().then(() => console.log("role created"));
-    res.end()
+      create_roles.save(function(err){
+        if (err) {
+          res.send(400, 'Bad Request or roles already exist')
+          res.end()
+        }
+        else{
+          res.json("[+]roles created")
+          res.end()
+        }
+      })
 });
 
 module.exports = router;

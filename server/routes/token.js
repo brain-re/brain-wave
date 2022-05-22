@@ -2,68 +2,34 @@ const dotenv = require('dotenv').config({path: __dirname + '/.env'});
 const router = require("express").Router();
 const jwt = require('jsonwebtoken');
 
-function jwt_verify(token,res){
+function refresh_token(req,res){
+  const authHeader = req.headers['authorization']
+  var token = authHeader && authHeader.split(' ')[1]
+  token = token.replace(/['"]+/g, '');
   jwt.verify(token, process.env.access_token_secret, (err, decoded) => {
     if (err) {
       console.log("[!] user use expired or invalid cookies")
-      res.status(403);
+      res.status(401);
     }
     else{
-      console.log(decoded)
-      const NewToken = jwt.sign({
-        data : decoded.data
+      var p1 = new Promise(function(resolve,reject){
+      var refreshed_token = jwt.sign({
+        user: decoded.email,
+        role: decoded.role
       }, process.env.access_token_secret, { expiresIn: process.env.jwt_time_expire});
-      console.log("[+] refreshing cookies")
-      res.json({bearer: token})
+      resolve(refreshed_token)
+      })
+      p1.then((refreshed_token) => {
+        console.log("[+] refreshing cookies")
+        res.json({bearer: refreshed_token})
+        res.end();
+      })
     }
   })
 }
 
-
-async function refresh_token (req, res){
-  if (req.headers['authorization'] == undefined){
-      console.log("[!] no token")
-      res.status(403);
-  }
-  else{
-    const authHeader = req.headers['authorization']
-    var token = authHeader && authHeader.split(' ')[1]
-    token = token.replace(/['"]+/g, '')
-    jwt_verify(token,res)
-  }
-};
-
 router.get("/refresh_token", (req, res) => {
   refresh_token(req, res)
-  res.end();
 });
-
-router.get("/user_control", (req, res, next) => {
-  console.log(req.headers['authorization'])
-  async function check_token(req, res, next){
-    if (req.headers['authorization'] == undefined){
-      console.log("[!] no token")
-      res.status(403);
-      res.end();
-    }
-    else{
-    const authHeader = req.headers['authorization']
-    var token = authHeader && authHeader.split(' ')[1]
-    token = token.replace(/['"]+/g, '')
-    jwt.verify(token, process.env.access_token_secret, (err, decoded) => {
-      if (err) {
-        console.log("[!] user use expired or invalid cookies")
-        res.status(403);
-        res.end();
-      }
-      else{
-        next()
-      }
-    })
-    }
-  }
-  check_token(req,res,next)
-});
-
 
 module.exports = router;

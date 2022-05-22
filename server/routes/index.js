@@ -20,12 +20,30 @@ const logger  = (req, res, next) => {
 router.use(logger)
 
 
+/* Info
+administrator : 62463c087ad782107e12ff7a
+user : 6288df5bfb6f79012342f80a
+creator : 6288dfd888de3002084436fb
+*/
+
 const rights = {
-  "/api/roles": ['62463c087ad782107e12ff7a']
+  "/api/roles": [["62463c087ad782107e12ff7a"]],
+  "/api/roles/create": [["62463c087ad782107e12ff7a"]],
+
+  "/api/products": [["62463c087ad782107e12ff7a"],["6288dfd888de3002084436fb"],["6288df5bfb6f79012342f80a"]],
+  "/api/products/create": [["62463c087ad782107e12ff7a"],["6288dfd888de3002084436fb"]],
+  
+  "/api/users":[["62463c087ad782107e12ff7a"]],
+  "/api/users/create":[["62463c087ad782107e12ff7a"]],
+
+  "/api/categories":[["62463c087ad782107e12ff7a"]],
+  "/api/categories/create":[["62463c087ad782107e12ff7a"]],
+
+  "/api/token/refresh_token":[["62463c087ad782107e12ff7a"],["6288dfd888de3002084436fb"],["6288df5bfb6f79012342f80a"]],
+
 }
 
-
-const check_user = async function check_token(req, res, next){
+const check_user = function check_token(req, res, next){
     if (req.headers['authorization'] == undefined){
       console.log("[!] no token")
       res.status(403);
@@ -34,30 +52,44 @@ const check_user = async function check_token(req, res, next){
     else{
     const authHeader = req.headers['authorization']
     var token = authHeader && authHeader.split(' ')[1]
-    token = token.replace(/['"]+/g, '')
-    
-    jwt.verify(token, process.env.access_token_secret, (err, decoded) => {
-      if (err) {
-        console.log("[!] user use expired or invalid cookies")
-        res.status(403);
-        res.end();
-      }
-      else{
-        var api_url_request = req.originalUrl
-        var test = JSON.stringify(rights[api_url_request])
-        var roles_decoded = JSON.stringify(decoded.role)
-        // parcourir les tableau et next si une occurence est valide
-        if (roles_decoded == test){
-          next()
-        }
-      }
-    })
+    try {
+      token = token.replace(/['"]+/g, '');
+    }catch{
+      res.status(401);
+      res.end();
     }
+    
+   jwt.verify(token, process.env.access_token_secret, (err, decoded) => {
+    if (err) {
+      console.log("[!] user use invalid cookies")
+      res.status(401);
+      res.end();
+    }
+    else{
+      var roles_decoded = JSON.stringify(decoded.role)
+      var p1 = new Promise(function(resolve,reject){
+        rights[req.originalUrl].forEach(element => {
+        element = JSON.stringify(element)
+        if (roles_decoded == element){
+          resolve()
+        }
+        })
+        reject()
+      })
+      p1.then(() => {
+        next()
+      }, () => {
+        res.status(401)
+        res.end()
+      })
+    }
+  })
   }
-
+}
 
 const product = require("./products");
-router.use("/api/products", product)
+router.use("/api/products", check_user, product)
+router.use("/api/products/create", check_user, product)
 
 const categorie = require("./categories")
 router.use("/api/categories", categorie)
@@ -70,6 +102,6 @@ const role = require("./roles")
 router.use("/api/roles",check_user, role)
 
 const token = require("./token")
-router.use("/api/token", token)
+router.use("/api/token",check_user, token)
 
 module.exports = router;

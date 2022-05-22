@@ -34,8 +34,16 @@ router.post("/create", (req, res) => {
     categories: req.body['categories'],
     images: req.body['images'],
     });
-    create_products.save().then(() => console.log("product created"));
-  res.end()
+    create_products.save(function(err){
+      if (err) {
+        res.send(400, '[!] all information are not send correctly to the server for the creation of a product')
+        res.end()
+      }
+      else{
+        res.json("[+] Products created")
+        res.end()
+      }
+    })
 });
 
 

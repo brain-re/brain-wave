@@ -7,15 +7,13 @@ const bcrypt = require('bcrypt');
 const { db, validate } = require("../models/users.model");
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
-const { use } = require('./token');
 
-console.log(dotenv)
 //send JWT for authenticate Users
-async function send_JWT(email, res){
+async function send_JWT(email, role, res){
   var token = jwt.sign({
-    data: email
+    user: email,
+    role: role
   }, process.env.access_token_secret, { expiresIn: process.env.jwt_time_expire});
-  //res.header({bearer: token})
   res.json({bearer: token})
   res.end()
 };
@@ -74,7 +72,7 @@ router.post("/login", (req, res) => {
     if (!checked_users[0]) {
       res.json("Mot de passe ou email invalide")
       console.log("[i] No user in BDD")
-    }
+    }             
     else{
       console.log("User exist", checked_users)
       console.log("[i] Checking the validity of the password")
@@ -83,7 +81,7 @@ router.post("/login", (req, res) => {
         res.json("Mot de passe ou email invalide")
       }
       else {
-        send_JWT(req.body.email,res);
+        send_JWT(req.body.email,checked_users[0].roles,res);
       }
     }
   }

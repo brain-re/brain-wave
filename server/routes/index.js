@@ -20,6 +20,11 @@ const logger  = (req, res, next) => {
 router.use(logger)
 
 
+const rights = {
+  "/api/roles": ['62463c087ad782107e12ff7a']
+}
+
+
 const check_user = async function check_token(req, res, next){
     if (req.headers['authorization'] == undefined){
       console.log("[!] no token")
@@ -30,6 +35,7 @@ const check_user = async function check_token(req, res, next){
     const authHeader = req.headers['authorization']
     var token = authHeader && authHeader.split(' ')[1]
     token = token.replace(/['"]+/g, '')
+    
     jwt.verify(token, process.env.access_token_secret, (err, decoded) => {
       if (err) {
         console.log("[!] user use expired or invalid cookies")
@@ -37,11 +43,18 @@ const check_user = async function check_token(req, res, next){
         res.end();
       }
       else{
-        next()
+        var api_url_request = req.originalUrl
+        var test = JSON.stringify(rights[api_url_request])
+        var roles_decoded = JSON.stringify(decoded.role)
+        // parcourir les tableau et next si une occurence est valide
+        if (roles_decoded == test){
+          next()
+        }
       }
     })
     }
   }
+
 
 const product = require("./products");
 router.use("/api/products", product)
@@ -54,7 +67,7 @@ router.use("/api/users", user)
 
 const check = require("./token")
 const role = require("./roles")
-router.use("/api/roles", check_user, role)
+router.use("/api/roles",check_user, role)
 
 const token = require("./token")
 router.use("/api/token", token)

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const categories = require("../models/categories.model");
 
 
-router.get("/", (req, res) => {
+router.get("/search", (req, res) => {
   if (req.query.search === undefined) {
     run_list_categories()
   } else {
@@ -25,6 +25,7 @@ router.get("/", (req, res) => {
     res.end();
     }
 });
+
 
 router.post("/create", (req, res) => {
     const create_categories = new categories ({

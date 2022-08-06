@@ -2,7 +2,7 @@ const router = require("express").Router();
 const mongoose = require("mongoose");
 const roles = require("../models/roles.model")
 
-router.get("/", (req, res) => {
+router.get("/search", (req, res) => {
     if (req.query.search === undefined) {
       run_100_last()
     } else {

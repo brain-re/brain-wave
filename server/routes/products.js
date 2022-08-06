@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Products = require("../models/products.model");
 const categories = require("../models/categories.model");
 
-router.get("/", (req, res) => {
+router.get("/search", (req, res) => {
   if (req.query.search === undefined) {
     run_100_last()
   } else {
@@ -25,6 +25,8 @@ router.get("/", (req, res) => {
     res.end()
   }
 });
+
+
 
 router.post("/create", (req, res) => {
   const create_products = new Products ({

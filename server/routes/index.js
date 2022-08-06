@@ -20,27 +20,27 @@ const logger  = (req, res, next) => {
 router.use(logger)
 
 
-/* Info
-administrator : 62463c087ad782107e12ff7a
-user : 6288df5bfb6f79012342f80a
-creator : 6288dfd888de3002084436fb
-*/
+
+const administrator = '62463c087ad782107e12ff7a'
+const user = '6288df5bfb6f79012342f80a'
+const creator = '6288dfd888de3002084436fb'
+
+
 
 const rights = {
-  "/api/roles": [["62463c087ad782107e12ff7a"]],
-  "/api/roles/create": [["62463c087ad782107e12ff7a"]],
+  "/api/roles": [[administrator]],
+  "/api/roles/create": [[administrator]],
 
-  "/api/products": [["62463c087ad782107e12ff7a"],["6288dfd888de3002084436fb"],["6288df5bfb6f79012342f80a"]],
-  "/api/products/create": [["62463c087ad782107e12ff7a"],["6288dfd888de3002084436fb"]],
+  "/api/products/search": [[administrator],[creator],[user]],
+  "/api/products/create": [[administrator],[creator]],
   
-  "/api/users":[["62463c087ad782107e12ff7a"]],
-  "/api/users/create":[["62463c087ad782107e12ff7a"]],
+  "/api/users/search":[[administrator]],
+  "/api/users/create":[[administrator]],
 
-  "/api/categories":[["62463c087ad782107e12ff7a"]],
-  "/api/categories/create":[["62463c087ad782107e12ff7a"]],
+  "/api/categories/search":[[administrator],[creator],[user]],
+  "/api/categories/create":[[administrator],[creator]],
 
-  "/api/token/refresh_token":[["62463c087ad782107e12ff7a"],["6288dfd888de3002084436fb"],["6288df5bfb6f79012342f80a"]],
-
+  "/api/token/refresh_token":[[administrator],[creator],[user]],
 }
 
 const check_user = function check_token(req, res, next){
@@ -55,6 +55,7 @@ const check_user = function check_token(req, res, next){
     try {
       token = token.replace(/['"]+/g, '');
     }catch{
+      console.log("[!] no valid token")
       res.status(401);
       res.end();
     }
@@ -62,14 +63,18 @@ const check_user = function check_token(req, res, next){
    jwt.verify(token, process.env.access_token_secret, (err, decoded) => {
     if (err) {
       console.log("[!] user use invalid cookies")
+      console.log(err)
       res.status(401);
       res.end();
     }
     else{
       var roles_decoded = JSON.stringify(decoded.role)
       var p1 = new Promise(function(resolve,reject){
+        console.log('[!]debug', req.originalUrl)
         rights[req.originalUrl].forEach(element => {
         element = JSON.stringify(element)
+        console.log("itération tableau=", element)
+        console.log(roles_decoded)
         if (roles_decoded == element){
           resolve()
         }
@@ -79,6 +84,7 @@ const check_user = function check_token(req, res, next){
       p1.then(() => {
         next()
       }, () => {
+        console.log("[!] user has invalid right for his request")
         res.status(401)
         res.end()
       })
@@ -87,19 +93,26 @@ const check_user = function check_token(req, res, next){
   }
 }
 
-const product = require("./products");
-router.use("/api/products", check_user, product)
-router.use("/api/products/create", check_user, product)
+const products = require("./products");
+router.use("/api/products/create", check_user, products)
+router.use("/api/products/search", check_user, products)
+router.use("/api/products", products)
 
 const categorie = require("./categories")
+router.use("/api/categories/create", check_user, categorie)
+router.use("/api/categories/search", check_user, categorie)
 router.use("/api/categories", categorie)
 
-const user = require("./users")
-router.use("/api/users", user)
+const users = require("./users")
+router.use("/api/users/create", check_user, users)
+router.use('/api/users/search',check_user, users)
+router.use("/api/users/login", users)
+router.use("/api/users", users)
 
-const check = require("./token")
 const role = require("./roles")
-router.use("/api/roles",check_user, role)
+router.use("/api/roles/create", check_user, role)
+router.use("/api/roles/search", check_user, role)
+router.use("/api/roles", role)
 
 const token = require("./token")
 router.use("/api/token",check_user, token)

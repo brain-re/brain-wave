@@ -33,6 +33,9 @@ const rights = {
 
   "/api/products/search": [[administrator],[creator],[user]],
   "/api/products/create": [[administrator],[creator]],
+  //Pour delete corriger le probleme lié au root
+  "/api/products/delete": [[administrator],[creator]],
+
   
   "/api/users/search":[[administrator]],
   "/api/users/create":[[administrator]],
@@ -69,19 +72,24 @@ const check_user = function check_token(req, res, next){
     }
     else{
       var roles_decoded = JSON.stringify(decoded.role)
-      var p1 = new Promise(function(resolve,reject){
-        console.log('[!]debug', req.originalUrl)
-        rights[req.originalUrl].forEach(element => {
-        element = JSON.stringify(element)
-        console.log("itération tableau=", element)
-        console.log(roles_decoded)
-        if (roles_decoded == element){
-          resolve()
-        }
+      
+      var right_control = new Promise(function(resolve,reject){
+        //On parse pour eviter une erreur suite a l'ajout de fonction via le ?
+        parsed_url = req.originalUrl.split('?')
+
+        console.log('[!]debug', parsed_url[0])
+        rights[parsed_url[0]].forEach(element => {
+          element = JSON.stringify(element)
+          console.log("itération tableau=", element)
+          console.log(roles_decoded)
+          if (roles_decoded == element){
+            resolve()
+          }
         })
         reject()
       })
-      p1.then(() => {
+      
+      right_control.then(() => {
         next()
       }, () => {
         console.log("[!] user has invalid right for his request")
@@ -96,6 +104,7 @@ const check_user = function check_token(req, res, next){
 const products = require("./products");
 router.use("/api/products/create", check_user, products)
 router.use("/api/products/search", check_user, products)
+router.use("/api/products/delete", check_user, products)
 router.use("/api/products", products)
 
 const categorie = require("./categories")

@@ -5,16 +5,21 @@ const categories = require("../models/categories.model");
 const jwt = require('jsonwebtoken');
 
 router.get("/search", (req, res) => {
-  if (req.query.search === undefined) {
-    run_100_last()
-  } else {
+  if (req.query.search != undefined) {
     run_search()
+  } 
+  else if (req.query.search_categorie != undefined) {
+    run_search_categorie()
+  }
+  else {
+    run_100_last()
   }
 
+
+
   async function run_search(){
-    search_product = req.query.search
     //The part below permit to insensitive the query
-    const regex = new RegExp(search_product, 'i')
+    const regex = new RegExp(req.query.search, 'i')
     const product = await Products.find({ $or: [{ name : {$regex: regex}},{ description : {$regex: regex}} ]}).populate("categories")
     res.json(product)
     res.end()
@@ -25,6 +30,17 @@ router.get("/search", (req, res) => {
     res.json(product)
     res.end()
   }
+
+  async function run_search_categorie(){
+    try{
+    const product = await Products.find({ categories : req.query.search_categorie }).populate("categories")
+    res.json(product)
+    } catch (error) {
+      res.json("[+] The category you are looking for is not valid")
+      res.end()
+    }
+  }
+
 });
 
 router.get("/delete", (req, res) => {
@@ -88,7 +104,6 @@ if (req.body.categories == undefined) {
       price: req.body['price'],
       categories: req.body['categories'],
       //[!] Voir pourquoi creator est un putain de tableau
-      //[!] Ensiger d'utiliser l'ID de l'utilisateur plutot que son mail
       creator: id_decoded.toString(),
       images: req.body['images'],
       });

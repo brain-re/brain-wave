@@ -9,10 +9,13 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
 //send JWT for authenticate Users
-async function send_JWT(id, role, res){
+async function send_JWT(check_user,res){
   var token = jwt.sign({
-    user: id,
-    role: role,
+    user: check_user.id,
+    role: check_user.role,
+    firstname: check_user.firstname,
+    lastname: check_user.lastname,
+    email: check_user.email,
     iat : Math.round(new Date().getTime() / 1000)
   }, process.env.access_token_secret, { expiresIn: process.env.jwt_time_expire});
   res.json({bearer: token})
@@ -54,10 +57,10 @@ router.post("/login", (req, res) => {
       console.log("[i] Checking the validity of the password")
       let bool = bcrypt.compareSync(req.body.password,checked_users[0].password)
       if (bool != true) {
-        res.json("Mot de passe ou email invalide")
+        res.json(403, "Mot de passe ou email invalide")
       }
       else {
-        send_JWT(checked_users[0]._id,checked_users[0].roles,res);
+        send_JWT(checked_users[0],res);
       }
     }
   }

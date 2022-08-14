@@ -11,9 +11,10 @@ const ProductsSchema = new Schema({
       type: Date,
       default: () => Date.now(),
     },
-    creator : [{ type: String, required : [true, 'Ceci n\'est pas un utilisateur valide']}],
+    creator : [{ type: Schema.Types.ObjectId, ref: 'users', required : [true, 'Ceci n\'est pas un utilisateur valide']}],
   });
 
 const Products = mongoose.model('Products', ProductsSchema );
 
 module.exports = Products;
+

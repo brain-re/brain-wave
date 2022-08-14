@@ -32,10 +32,10 @@ const rights = {
   "/api/roles/create": [[administrator]],
 
   "/api/products/search": [[administrator],[creator],[user]],
+  "/api/products/like": [[administrator],[creator],[user]],
   "/api/products/create": [[administrator],[creator]],
-  //Pour delete corriger le probleme lié au root
   "/api/products/delete": [[administrator],[creator]],
-
+  
   
   "/api/users/search":[[administrator]],
   "/api/users/create":[[administrator]],

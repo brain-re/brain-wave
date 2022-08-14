@@ -103,7 +103,7 @@ const check_user = function check_token(req, res, next){
 
 const products = require("./products");
 router.use("/api/products/create", check_user, products)
-router.use("/api/products/search", check_user, products)
+router.use("/api/products/search", products)
 router.use("/api/products/delete", check_user, products)
 router.use("/api/products", products)
 

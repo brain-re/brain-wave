@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Products = require("../models/products.model");
 const categories = require("../models/categories.model");
 const jwt = require('jsonwebtoken');
+const { query } = require("express");
 
 router.get("/search", (req, res) => {
   if (req.query.search != undefined) {
@@ -41,15 +42,16 @@ router.get("/search", (req, res) => {
 
 });
 
+/*
 router.get("/like", (req, res) => {
-  //req.query.like
-  //req.query.product_id
-  res.end()
-
-
 })
+*/
 
 router.get("/delete", (req, res) => {
+if (req.query.delete.length != 24){
+    res.send(400,"[!] invalid input for a product ")
+    res.end()
+  }
   const authHeader = req.headers['authorization']
   var token = authHeader && authHeader.split(' ')[1]
   jwt.verify(token, process.env.access_token_secret, (err, decoded) => {
@@ -60,10 +62,14 @@ router.get("/delete", (req, res) => {
     var id_decoded = JSON.stringify(decoded.user)
     console.log("[+] Session utilisateur", id_decoded)
     id_decoded = id_decoded.replace(/['"]+/g, '');
-
     var p1 = new Promise(function(resolve,reject){
-      const check_user0 = Products.find({creator: id_decoded, _id: req.query.delete })
-      resolve(check_user0)
+      var check_user0 = Products.find({creator: id_decoded, _id: req.query.delete })
+      check_user0.exec(function (err) {
+        if (err) {
+            return;
+        }
+        resolve(check_user0)
+        });
     })
     p1.then((test) => {
       console.log(test[0]) 
@@ -74,7 +80,12 @@ router.get("/delete", (req, res) => {
         console.log("Suppression du produit en cours")
         var p2 = new Promise(function(resolve,reject){
           const deleted_products = Products.deleteOne({creator: id_decoded, _id: req.query.delete })
-          resolve(deleted_products)
+          deleted_products.exec(function (err) {
+            if (err) {
+                return;
+            }
+            resolve(deleted_products)
+          });
         })
         p2.then((test) => {
           res.json(test)

@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
 import { FormGroup, Validators } from "@angular/forms";
-import { ICategory } from "src/app/logic/interfaces/category.interface";
 
 import { BaseFormBuilder } from "src/app/shared/form/base-form.builder";
-import { CategoryService } from "src/app/shared/services/category.service";
 import { IProductForm } from "./product.type";
 
 @Injectable({

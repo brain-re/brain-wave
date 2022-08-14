@@ -16,7 +16,7 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   public fetch(): Observable<IProduct[]> {
-    return this.http.get<IProduct[]>(`${HTTP_API}/products`)
+    return this.http.get<IProduct[]>(`${HTTP_API}/products/search`)
         .pipe(
           tap((products$: IProduct[]) => {
           this.products$.next(products$);
@@ -27,7 +27,7 @@ export class ProductService {
   public search(searchProduct: ISearchProduct): Observable<IProduct[]>
   {
     let search = searchProduct.search;
-    return this.http.get<IProduct[]>(`${HTTP_API}/products?search=${search}`)
+    return this.http.get<IProduct[]>(`${HTTP_API}/products/search?search=${search}`)
     .pipe(
       debounceTime(500),
       tap(data => {

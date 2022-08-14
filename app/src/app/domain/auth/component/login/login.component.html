@@ -1,0 +1,42 @@
+<form [formGroup]="form" class="mt-20 form-big">
+  <div>
+    <mat-form-field *ngIf="email" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="text"/>
+    </mat-form-field>
+    <div *ngIf="(email.touched || submitted) && email.invalid" class="alert alert-danger">
+      <div *ngIf="email.errors?.['required']">
+        L'email est obligatoire.
+      </div>
+      <div *ngIf="email.errors?.['minlength']">
+        La longueur minimale est 5 caractères.
+      </div>
+      <div *ngIf="email.errors?.['maxlength']">
+        La longueur maximale est 255 caractères.
+      </div>
+    </div>
+  </div>
+  <div>
+    <mat-form-field *ngIf="password" appearance="outline">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput formControlName="password" type="text"/>
+    </mat-form-field>
+    <div *ngIf="(password.touched || submitted) && password.invalid" class="alert alert-danger">
+      <div *ngIf="password.errors?.['required']">
+        Un mot de passe est requis.
+      </div>
+      <div *ngIf="password.errors?.['minlength']">
+        La longueur minimale est 5 caractères.
+      </div>
+      <div *ngIf="password.errors?.['maxlength']">
+        La longueur maximale est 255 caractères.
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary" (click)="loginin()" type="button">
+    Connexion
+  </button>
+  <div *ngIf="error" class="alert alert-danger">
+    <span>{{error}}</span>
+  </div>
+</form>

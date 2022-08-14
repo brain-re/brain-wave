@@ -14,11 +14,10 @@ export class ProductCreateComponent implements OnInit {
   public categories$: ICategory[] = [];
 
   constructor(
-    private productFormBuilder:ProductFormBuilder,
+    private productFormBuilder: ProductFormBuilder,
     private productService: ProductService,
-    private categorieService:CategoryService
-  ) {
-  }
+    private categorieService: CategoryService
+  ) {}
 
   ngOnInit(): void {
     this.categorieService.fetch().subscribe(
@@ -26,8 +25,6 @@ export class ProductCreateComponent implements OnInit {
     );
 
     this.form = this.productFormBuilder.build();
-
-    console.log(this.form);
   }
 
   get name(): AbstractControl|null {
@@ -48,10 +45,7 @@ export class ProductCreateComponent implements OnInit {
 
   submit(form: FormGroup): void
   {
-    console.log('submitted');
     if (!form || !form.valid) {
-      console.log('invalid', form);
-
       return null;
     }
 

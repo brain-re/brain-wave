@@ -31,7 +31,6 @@ const rights = {
   "/api/roles": [[administrator]],
   "/api/roles/create": [[administrator]],
 
-  "/api/products/search": [[administrator],[creator],[user]],
   "/api/products/like": [[administrator],[creator],[user]],
   "/api/products/create": [[administrator],[creator]],
   "/api/products/delete": [[administrator],[creator]],
@@ -40,7 +39,6 @@ const rights = {
   "/api/users/search":[[administrator]],
   "/api/users/create":[[administrator]],
 
-  "/api/categories/search":[[administrator],[creator],[user]],
   "/api/categories/create":[[administrator],[creator]],
 
   "/api/token/refresh_token":[[administrator],[creator],[user]],
@@ -109,7 +107,7 @@ router.use("/api/products", products)
 
 const categorie = require("./categories")
 router.use("/api/categories/create", check_user, categorie)
-router.use("/api/categories/search", check_user, categorie)
+router.use("/api/categories/search", categorie)
 router.use("/api/categories", categorie)
 
 const users = require("./users")

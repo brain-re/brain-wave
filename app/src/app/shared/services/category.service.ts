@@ -15,7 +15,7 @@ export class CategoryService {
   constructor(private http: HttpClient) {}
 
   public fetch(): Observable<ICategory[]> {
-    return this.http.get<ICategory[]>(`${HTTP_API}/categories`)
+    return this.http.get<ICategory[]>(`${HTTP_API}/categories/search`)
         .pipe(
           tap((category: ICategory[]) => {
           this.categories$.next(category);

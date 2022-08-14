@@ -49,7 +49,7 @@ router.post("/login", (req, res) => {
   async function check_user_existing(){
     const checked_users = await users.find({email:req.body.email})
     if (!checked_users[0]) {
-      res.json("Mot de passe ou email invalide")
+      res.json(403, "Mot de passe ou email invalide")
       console.log("[i] No user in BDD")
     }             
     else{

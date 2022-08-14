@@ -1,6 +1,11 @@
 <mat-toolbar>
   HOMEPAGE
+  <span class="spacer"></span>
+  <button mat-icon-button aria-label="Login icon">
+    <mat-icon [routerLink]="['auth/login']">login</mat-icon>
+  </button>
 </mat-toolbar>
 <br />
 
 <a [routerLink]="['products']">Liste des produits</a>
+<span *ngIf="user">{{user}}</span>

@@ -12,6 +12,8 @@ const ProductsSchema = new Schema({
       default: () => Date.now(),
     },
     creator : [{ type: Schema.Types.ObjectId, ref: 'users', required : [true, 'Ceci n\'est pas un utilisateur valide']}],
+    liked : { type: Number },
+    disliked : { type: Number},
   });
 
 const Products = mongoose.model('Products', ProductsSchema );

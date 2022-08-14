@@ -71,7 +71,7 @@ const check_user = function check_token(req, res, next){
       res.end();
     }
     else{
-      var roles_decoded = JSON.stringify(decoded.role)
+      var roles_decoded = JSON.stringify(decoded.roles)
       
       var right_control = new Promise(function(resolve,reject){
         //On parse pour eviter une erreur suite a l'ajout de fonction via le ?
@@ -118,10 +118,10 @@ router.use('/api/users/search',check_user, users)
 router.use("/api/users/login", users)
 router.use("/api/users", users)
 
-const role = require("./roles")
-router.use("/api/roles/create", check_user, role)
-router.use("/api/roles/search", check_user, role)
-router.use("/api/roles", role)
+const roles = require("./roles")
+router.use("/api/roles/create", check_user, roles)
+router.use("/api/roles/search", check_user, roles)
+router.use("/api/roles", roles)
 
 const token = require("./token")
 router.use("/api/token",check_user, token)

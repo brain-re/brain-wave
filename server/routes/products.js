@@ -15,25 +15,23 @@ router.get("/search", (req, res) => {
     run_100_last()
   }
 
-
-
   async function run_search(){
     //The part below permit to insensitive the query
     const regex = new RegExp(req.query.search, 'i')
-    const product = await Products.find({ $or: [{ name : {$regex: regex}},{ description : {$regex: regex}} ]}).populate("categories")
+    const product = await Products.find({ $or: [{ name : {$regex: regex}},{ description : {$regex: regex}} ]}).populate("categories").populate("users")
     res.json(product)
     res.end()
   }
 
   async function run_100_last(){
-    const product = await Products.find().sort({ _id: -1 }).limit(100).populate("categories")
+    const product = await Products.find().sort({ _id: -1 }).limit(100).populate("categories").populate("users")
     res.json(product)
     res.end()
   }
 
   async function run_search_categorie(){
     try{
-    const product = await Products.find({ categories : req.query.search_categorie }).populate("categories")
+    const product = await Products.find({ categories : req.query.search_categorie }).populate("categories").populate("users")
     res.json(product)
     } catch (error) {
       res.json("[+] The category you are looking for is not valid")
@@ -42,6 +40,14 @@ router.get("/search", (req, res) => {
   }
 
 });
+
+router.get("/like", (req, res) => {
+  //req.query.like
+  //req.query.product_id
+  res.end()
+
+
+})
 
 router.get("/delete", (req, res) => {
   const authHeader = req.headers['authorization']

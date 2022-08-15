@@ -20,7 +20,7 @@ const APP_PRODUCT_ROUTES: Routes = [
     ],
   },
   {
-    path: 'product',
+    path: 'products',
     component: ProductContainerComponent,
     children: [
       {

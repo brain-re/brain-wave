@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { tap } from 'rxjs/operators';
+import { jwtToken } from 'src/app/domain/auth/model/jwt-token.model';
 import { AuthService } from 'src/app/domain/auth/service/auth.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.authService.token$.pipe(
-      tap((token: string) => this.user = token)
+      tap((token: jwtToken) => this.user = token.token)
     ).subscribe()
   }
 

@@ -70,7 +70,7 @@ router.get("/search", (req, res) => {
 
 router.get("/like", (req, res) => {
   decoded_bearer = decode_bearer(req)
-  
+
   var product_target_query = new Promise(function(resolve,reject){
     const product = Products.find({_id: req.query.product_id})
     product.exec(function (err){
@@ -80,6 +80,43 @@ router.get("/like", (req, res) => {
       resolve(product)
     });
   })
+
+  async function remove_liked_product(){
+    try{
+    const already_liked = await Products.updateOne(
+      { _id: req.query.product_id }, 
+      { $pull: { liked: decoded_bearer.user} },
+    );
+    const user_already_liked = await Users.updateOne(
+      { _id: decoded_bearer.user},
+      { $pull: {product_liked: req.query.product_id}}
+    );
+    } catch (error){
+      console.log(403,"[!] Something wrong with the id of the product disliked, the level of its error is at function liked_product")
+      console.log(error)
+      res.end()
+    }
+    console.log("[i] The entry for the like of user is removed")
+  }
+
+  async function remove_disliked_product(){
+    try{
+    const already_disliked = await Products.updateOne(
+      { _id: req.query.product_id }, 
+      { $pull: { disliked: decoded_bearer.user} },
+    );
+    const user_already_disliked = await Users.updateOne(
+      { _id: decoded_bearer.user},
+      { $pull: {product_disliked: req.query.product_id}}
+    );
+    } catch (error){
+      console.log(403,"[!] Something wrong with the id of the product disliked, the level of its error is at function liked_product")
+      console.log(error)
+      res.end()
+    }
+    console.log("[i] The entry for the dislike of user and the product is removed")
+  }
+
 
   //Like condition
   if (req.query.like === "1"){
@@ -104,9 +141,9 @@ router.get("/like", (req, res) => {
           }
         }
 
-
         if (liked === "already liked"){
-          res.status(401).send("[!] The client like already this product")
+          remove_liked_product()
+          res.status(401).send("[+] The product is no longer liked")
           res.end()
         }
         else if (disliked === "already disliked"){
@@ -116,7 +153,8 @@ router.get("/like", (req, res) => {
         }
         else{
           liked_product()
-        } 
+        }
+
       }
     }, () => {
       res.status(403).send("[!] Something wrong with the id of the product liked, the ID is not valid")
@@ -140,25 +178,6 @@ router.get("/like", (req, res) => {
       res.status(200).send("[+] The product is succefully liked")
       res.end()
     }
-
-    async function remove_disliked_product(){
-      try{
-      const already_disliked = await Products.updateOne(
-        { _id: req.query.product_id }, 
-        { $pull: { disliked: decoded_bearer.user} },
-      );
-      const user_already_disliked = await Users.updateOne(
-        { _id: decoded_bearer.user},
-        { $pull: {product_disliked: req.query.product_id}}
-      );
-      } catch (error){
-        console.log(403,"[!] Something wrong with the id of the product disliked, the level of its error is at function liked_product")
-        console.log(error)
-        res.end()
-      }
-      console.log("[i] The entry for the dislike of user and the product is removed")
-    }
-
   }
   //dislike condition
   else if (req.query.like === "0"){
@@ -184,7 +203,8 @@ router.get("/like", (req, res) => {
         }
 
         if (disliked === "already disliked"){
-          res.status(401).send("[!] The client dislike already this product")
+          remove_disliked_product()
+          res.status(401).send("[+] The product is no longer disliked")
           res.end()
         }
         else if (liked === "already liked"){
@@ -216,30 +236,14 @@ router.get("/like", (req, res) => {
         res.end()
       }
 
-      async function remove_liked_product(){
-        try{
-        const already_liked = await Products.updateOne(
-          { _id: req.query.product_id }, 
-          { $pull: { liked: decoded_bearer.user} },
-        );
-        const user_already_liked = await Users.updateOne(
-          { _id: decoded_bearer.user},
-          { $pull: {product_liked: req.query.product_id}}
-        );
-        } catch (error){
-          console.log(403,"[!] Something wrong with the id of the product disliked, the level of its error is at function liked_product")
-          console.log(error)
-          res.end()
-        }
-        console.log("[i] The entry for the like of user is removed")
-      }
-
-
     }, () => {
       res.status(403).send("[!] Something wrong with the id of the product liked, the ID is not valid")
     })
   }
   else{
+    //Besoin de traiter obligatoirement la fonction promise sinon erreur.
+    product_target_query.then(() => {
+    }, () => {})
     res.status(403).send("[!]Valeur d'input like invalide, attendu booleen")
     res.end()
   }

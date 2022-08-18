@@ -65,7 +65,7 @@ const check_user = function check_token(req, res, next){
     if (err) {
       console.log("[!] user use invalid cookies")
       console.log(err)
-      res.status(401);
+      res.status(404).send("[!] Cookie validity expired");
       res.end();
     }
     else{
@@ -101,6 +101,7 @@ const check_user = function check_token(req, res, next){
 
 const products = require("./products");
 router.use("/api/products/create", check_user, products)
+router.use("/api/products/like", check_user, products)
 router.use("/api/products/search", products)
 router.use("/api/products/delete", check_user, products)
 router.use("/api/products", products)

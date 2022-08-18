@@ -19,7 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     // Retourne une copie de la requête d'origine, contenant en plus un token d'authentification
     const updateReq = req.clone({
-      headers: req.headers.set('Authorization', token.token),
+      headers: req.headers.set('Authorization', "bearer " + token.token),
     });
     return next.handle(updateReq);
   }

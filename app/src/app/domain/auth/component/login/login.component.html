@@ -19,7 +19,7 @@
   <div>
     <mat-form-field *ngIf="password" appearance="outline">
       <mat-label>Mot de passe</mat-label>
-      <input matInput formControlName="password" type="text"/>
+      <input matInput formControlName="password" type="password"/>
     </mat-form-field>
     <div *ngIf="(password.touched || submitted) && password.invalid" class="alert alert-danger">
       <div *ngIf="password.errors?.['required']">

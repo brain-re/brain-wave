@@ -71,7 +71,7 @@ router.get("/search", (req, res) => {
 router.get("/like", (req, res) => {
   decoded_bearer = decode_bearer(req)
 
-  var product_target_query = new Promise(function(resolve,reject){
+  const product_target_query = new Promise(function(resolve,reject){
     const product = Products.find({_id: req.query.product_id})
     product.exec(function (err){
       if (err){

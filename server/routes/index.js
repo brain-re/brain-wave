@@ -34,8 +34,7 @@ const rights = {
   "/api/products/like": [[administrator],[creator],[user]],
   "/api/products/create": [[administrator],[creator]],
   "/api/products/delete": [[administrator],[creator]],
-  
-  
+
   "/api/users/search":[[administrator]],
   "/api/users/create":[[administrator]],
 
@@ -73,8 +72,10 @@ const check_user = function check_token(req, res, next){
       
       var right_control = new Promise(function(resolve,reject){
         //On parse pour eviter une erreur suite a l'ajout de fonction via le ?
+        console.log(typeof(req.originalUrl))
         parsed_url = req.originalUrl.split('?')
-
+        console.log(typeof(parsed_url))
+        console.log("log[!] ", parsed_url)
         console.log('[!]debug', parsed_url[0])
         rights[parsed_url[0]].forEach(element => {
           element = JSON.stringify(element)
@@ -124,5 +125,8 @@ router.use("/api/roles", roles)
 
 const token = require("./token")
 router.use("/api/token",check_user, token)
+
+const divers = require('./divers/check_rights.js')
+router.use("/api/is_granted", divers)
 
 module.exports = router;

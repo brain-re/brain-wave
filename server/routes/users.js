@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const users = require("../models/users.model")
 const roles = require("../models/roles.model")
 const bcrypt = require('bcrypt');
-const { db, validate } = require("../models/users.model");
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
@@ -32,8 +31,8 @@ router.get("/search", (req, res) => {
   async function run_search(){
     search_users = req.query.search
     //The part below permit to insensitive the query
-    const regex = new RegExp(search_product, 'i')
-    const user = await users.find({ $or: [{ name : {$regex: regex}},{ description : {$regex: regex}} ]})
+    const regex = new RegExp(search_users, 'i')
+    const user = await users.find({ $or: [{ email : {$regex: regex}}]})
     res.json(user)
     res.end()
   }

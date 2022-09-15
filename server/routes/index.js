@@ -72,11 +72,8 @@ const check_user = function check_token(req, res, next){
       
       var right_control = new Promise(function(resolve,reject){
         //On parse pour eviter une erreur suite a l'ajout de fonction via le ?
-        console.log(typeof(req.originalUrl))
         parsed_url = req.originalUrl.split('?')
-        console.log(typeof(parsed_url))
-        console.log("log[!] ", parsed_url)
-        console.log('[!]debug', parsed_url[0])
+        
         rights[parsed_url[0]].forEach(element => {
           element = JSON.stringify(element)
           console.log("itération tableau=", element)
@@ -126,7 +123,10 @@ router.use("/api/roles", roles)
 const token = require("./token")
 router.use("/api/token",check_user, token)
 
-const divers = require('./divers/check_rights.js')
-router.use("/api/is_granted", divers)
+const global_rights = require('./client_check_rights/check_rights.js')
+router.use("/api/is_granted", global_rights)
+
+const specific_rights = require('./client_check_rights/specific_rights.js')
+router.use("/api/specific_granted/delete", specific_rights)
 
 module.exports = router;

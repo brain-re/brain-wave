@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
-
-//const uniqueValidator = require('mongoose-unique-validator');
+const saltRounds = 10;
 
 const userSchema = mongoose.Schema({
   firstname: {type: String, required: true},
@@ -11,9 +11,19 @@ const userSchema = mongoose.Schema({
   roles: [{ type: Schema.Types.ObjectId, ref: 'roles', required : [true, 'Ceci n\'est pas un role valide']}],
   product_liked: [{ type: Schema.Types.ObjectId, ref: 'products'}],
   product_disliked: [{ type: Schema.Types.ObjectId, ref: 'products'}],
+  blocked: Boolean
 });
 
-//userSchema.plugin(uniqueValidator);
+userSchema.pre('save', function(next) {
+  let crypt = new Promise((resolve, reject) => {
+    bcrypt.hash(this.password, saltRounds)
+          .then((hash) => resolve(hash));
+  });
+
+  crypt.then(sha => this.password = sha);
+
+  next();
+});
 
 const Users = mongoose.model('User', userSchema);
 

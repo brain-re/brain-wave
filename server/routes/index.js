@@ -21,15 +21,15 @@ router.use(logger)
 
 
 
-const administrator = '62463c087ad782107e12ff7a'
-const user = '6288df5bfb6f79012342f80a'
-const creator = '6288dfd888de3002084436fb'
+const role_administrator = '62463c087ad782107e12ff7a'
+const role_user = '6288df5bfb6f79012342f80a'
+const role_creator = '6288dfd888de3002084436fb'
 
 
 
 const rights = {
-  "/api/roles": [[administrator]],
-  "/api/roles/create": [[administrator]],
+  "/api/roles": [[role_administrator]],
+  "/api/roles/create": [[role_administrator]],
 
   "/api/products/like": [[administrator],[creator],[user]],
   "/api/products/create": [[administrator],[creator]],
@@ -38,9 +38,9 @@ const rights = {
   "/api/users/search":[[administrator]],
   "/api/users/create":[[administrator]],
 
-  "/api/categories/create":[[administrator],[creator]],
+  "/api/categories/create":[[role_administrator],[role_creator]],
 
-  "/api/token/refresh_token":[[administrator],[creator],[user]],
+  "/api/token/refresh_token":[[role_administrator],[role_creator],[role_user]],
 }
 
 const check_user = function check_token(req, res, next){
@@ -109,8 +109,11 @@ router.use("/api/categories/create", check_user, categorie)
 router.use("/api/categories/search", categorie)
 router.use("/api/categories", categorie)
 
+const user = require("./user")
+router.use("/api/user/current", check_user, user)
+
 const users = require("./users")
-router.use("/api/users/create", check_user, users)
+router.use("/api/users/create", users)
 router.use('/api/users/search',check_user, users)
 router.use("/api/users/login", users)
 router.use("/api/users", users)

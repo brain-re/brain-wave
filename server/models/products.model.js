@@ -6,12 +6,9 @@ const ProductsSchema = new Schema({
     description : { type : String, required : [true, 'Un produit à besoin d\'une description']},
     price : { type : Number, required : [true, 'Un produit à besoin d\'un prix']}, 
     categories : [{ type: Schema.Types.ObjectId, ref: 'categories', required : [true, 'Ceci n\'est pas une categorie valide']}],
-    images : { type : [String]},
-    createdAt : {
-      type: Date,
-      default: () => Date.now(),
-    },
-    creator : [{ type: Schema.Types.ObjectId, ref: 'users', required : [true, 'Ceci n\'est pas un utilisateur valide']}],
+    images : [{type : String}],
+    createdAt : {type: Date, default: () => Date.now()},
+    creator : { type: Schema.Types.ObjectId, ref: 'users', required : [true, 'Ceci n\'est pas un utilisateur valide']},
     liked : [{ type: Schema.Types.ObjectId, ref: 'users'}],
     disliked : [{ type: Schema.Types.ObjectId, ref: 'users'}],
   });

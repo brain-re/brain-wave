@@ -5,8 +5,7 @@ WORKDIR /usr/app
 COPY package*.json ./
 
 RUN npm -g install npm@8.4.0 && \
-    npm install -g @angular/cli@12.1.3 && \
-    npm install
+    npm install bootstrap jquery popper.js @angular/cli@12.1.3 --save
 
 EXPOSE 4200 49153
 

@@ -4,7 +4,10 @@ WORKDIR /express
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install && \
+    npm install migrate -g && \
+    npm install node-mongodb-fixtures -g && \
+    npm install @faker-js/faker --save-dev
 
 COPY . .
 

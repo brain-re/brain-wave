@@ -67,27 +67,25 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/create", (req, res) => {
-    bcrypt.hash(req.body['password'], saltRounds, function(err, hash) {
-        console.log(hash)
-        const create_users = new users ({
-          firstname: req.body['firstname'],
-          lastname: req.body['lastname'],
-          email: req.body['email'],
-          roles: req.body['role'],
-          password: hash,
-          });
-        create_users.save(function(err){
-          if (err) {
-            console.log(err);
-            res.send(400, 'Bad Request or user already exist')
-            res.end()
-          }
-          else{
-            res.json("[+]User created")
-            res.end()
-          }
-        })
-    });
+  const create_users = new users ({
+    firstname: req.body['firstname'],
+    lastname: req.body['lastname'],
+    email: req.body['email'],
+    roles: req.body['role'],
+    password: req.body['password'],
+  });
+
+  create_users.save(function(err){
+    if (err) {
+      console.log(err);
+      res.send(400, 'Bad Request or user already exist')
+      res.end()
+    }
+    else{
+      res.json("[+]User created")
+      res.end()
+    }
+  });
 });
 
 module.exports = router;

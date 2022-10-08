@@ -137,7 +137,7 @@ router.use("/api/specific_granted/delete", specific_rights)
 const entreprises_create = require('./principale/entreprises/create_entreprises.js')
 router.use("/api/entreprises/create", check_user, entreprises_create)
 
-const entreprises_propositions = require('./principale/entreprises/propose_entreprise')
+const entreprises_propositions = require('./principale/entreprises/propose_entreprises')
 router.use("/api/entreprises/proposition", entreprises_propositions)
 
 module.exports = router;

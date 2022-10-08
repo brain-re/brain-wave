@@ -31,12 +31,12 @@ const rights = {
   "/api/roles": [[role_administrator]],
   "/api/roles/create": [[role_administrator]],
 
-  "/api/products/like": [[administrator],[creator],[user]],
-  "/api/products/create": [[administrator],[creator]],
-  "/api/products/delete": [[administrator],[creator]],
+  "/api/products/like": [[role_administrator],[role_creator],[role_user]],
+  "/api/products/create": [[role_administrator],[role_creator]],
+  "/api/products/delete": [[role_administrator],[role_creator]],
 
-  "/api/users/search":[[administrator]],
-  "/api/users/create":[[administrator]],
+  "/api/users/search":[[role_administrator]],
+  "/api/users/create":[[role_administrator]],
 
   "/api/categories/create":[[role_administrator],[role_creator]],
 

@@ -6,10 +6,15 @@ var run_search_by_propriety = require('../utility function/bdd_query').run_searc
 
 router.get("/", (req, res) => {
   jwt_decoded = funct_decode_bearer(req)
-
   var p1 = new Promise(function(resolve){
-    user_propriety = run_search_by_propriety(jwt_decoded.user)
-    resolve(user_propriety)
+    try{
+      user_propriety = run_search_by_propriety(jwt_decoded.user)
+      resolve(user_propriety)
+    }
+    catch{
+      res.status(401).send("[+] Bad bearer for this API")
+      res.end()
+    }
   })
   p1.then((user_propriety) => {
     if (user_propriety[0] === undefined){

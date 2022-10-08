@@ -14,13 +14,15 @@ const userSchema = mongoose.Schema({
   blocked: Boolean
 });
 
-userSchema.pre('save', function(next) {
+userSchema.pre('save', async function(next) {
   let crypt = new Promise((resolve, reject) => {
     bcrypt.hash(this.password, saltRounds)
           .then((hash) => resolve(hash));
   });
 
-  crypt.then(sha => this.password = sha);
+  await crypt.then(sha => {
+    this.password = sha
+  });
 
   next();
 });

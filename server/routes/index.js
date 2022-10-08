@@ -31,16 +31,18 @@ const rights = {
   "/api/roles": [[role_administrator]],
   "/api/roles/create": [[role_administrator]],
 
-  "/api/products/like": [[administrator],[creator],[user]],
-  "/api/products/create": [[administrator],[creator]],
-  "/api/products/delete": [[administrator],[creator]],
+  "/api/products/like": [[role_administrator],[role_creator],[role_user]],
+  "/api/products/create": [[role_administrator],[role_creator]],
+  "/api/products/delete": [[role_administrator],[role_creator]],
 
-  "/api/users/search":[[administrator]],
-  "/api/users/create":[[administrator]],
+  "/api/users/search":[[role_administrator]],
+  "/api/users/create":[[role_administrator]],
 
   "/api/categories/create":[[role_administrator],[role_creator]],
 
   "/api/token/refresh_token":[[role_administrator],[role_creator],[role_user]],
+
+  "/api/entreprises/create": [[role_administrator]]
 }
 
 const check_user = function check_token(req, res, next){
@@ -131,5 +133,11 @@ router.use("/api/is_granted", global_rights)
 
 const specific_rights = require('./client_check_rights/specific_rights.js')
 router.use("/api/specific_granted/delete", specific_rights)
+
+const entreprises_create = require('./principale/entreprises/create_entreprises.js')
+router.use("/api/entreprises/create", check_user, entreprises_create)
+
+const entreprises_propositions = require('./principale/entreprises/propose_entreprise')
+router.use("/api/entreprises/proposition", entreprises_propositions)
 
 module.exports = router;

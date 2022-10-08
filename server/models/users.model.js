@@ -20,9 +20,10 @@ userSchema.pre('save', function(next) {
           .then((hash) => resolve(hash));
   });
 
-  crypt.then(sha => this.password = sha);
-
-  next();
+  crypt.then((sha) => {
+    this.password = sha
+    next();
+  })
 });
 
 const Users = mongoose.model('User', userSchema);

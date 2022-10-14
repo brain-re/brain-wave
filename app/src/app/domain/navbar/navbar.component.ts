@@ -17,5 +17,15 @@ export class NavbarComponent implements OnInit {
       tap((token: jwtToken) => this.user = token.token)
     ).subscribe()
   }
+  animate(){
+    const sidebar = document.querySelector('.sidebar')
+    const sidebarActive = document.getElementById('active')
 
+    //check the status of sidebar + animate
+    if (sidebarActive === null){
+      sidebar.setAttribute('id','active')
+    }else{
+      sidebar.setAttribute('id','notactive')
+    }
+  }
 }

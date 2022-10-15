@@ -11,6 +11,7 @@ const ProductsSchema = new Schema({
     creator : { type: Schema.Types.ObjectId, ref: 'users', required : [true, 'Ceci n\'est pas un utilisateur valide']},
     liked : [{ type: Schema.Types.ObjectId, ref: 'users'}],
     disliked : [{ type: Schema.Types.ObjectId, ref: 'users'}],
+    entreprise : [{ type : Schema.Types.ObjectId, ref: 'entreprises'}]
   });
 
 const Products = mongoose.model('Products', ProductsSchema );

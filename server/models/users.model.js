@@ -20,6 +20,12 @@ userSchema.pre('save', async function(next) {
           .then((hash) => resolve(hash));
   });
 
+  crypt.then(sha => {
+    this.password = sha
+    
+    next();
+  });
+=======
   await crypt.then(sha => {
     this.password = sha
   });

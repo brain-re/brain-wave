@@ -1,14 +1,36 @@
-<mat-toolbar>
-  <a [routerLink]="['/']">Accueil</a>
-  <span class="spacer"></span>
-  <span *ngIf="user">
-    <button mat-icon-button aria-label="Login icon">
-      <mat-icon [routerLink]="['auth/login']">login</mat-icon>
+<!--NAVBAR-->
+<nav class="navbar">
+  <div class="container-fluid">
+    <button (click)="animate()" class="btn btn-link menuIcon" type="button"><mat-icon>menu</mat-icon></button>
+      <img [routerLink]="['/']" src="assets/logo.png">
+    <form class="d-flex">
+      <span *ngIf="user">
+        <button class="btn btn-outline-success btn-co" aria-label="Login icon" type="submit" [routerLink]="['auth/login']">Mon compte</button>
+      </span>
+      <span *ngIf="!user">
+        <button class="btn btn-outline-success btn-co" aria-label="Account icon" type="submit" [routerLink]="['auth/login']">Déconnexion</button>
+      </span>
+    </form>
+  </div>
+</nav>
+<!--SIDEBAR-->
+<div class="sidebar" id="notactive">
+  <button (click)="animate()" class="btn btn-link closeIcon" type="button"><mat-icon>close</mat-icon></button>
+  <ul class="list-group">
+    <li class="list-group-item">MENU</li>
+    <li class="list-group-item menu-link"><a [routerLink]="['/products']">Liste des produits</a></li>
+    <li class="list-group-item menu-link"><a [routerLink]="['/products']">Liste des produits</a></li>
+    <li class="list-group-item menu-link"><a [routerLink]="['/products']">Liste des produits</a></li>
+    <li class="list-group-item menu-link"><a [routerLink]="['/products']">Liste des produits</a></li>
+    <li class="list-group-item menu-link"><a [routerLink]="['/products']">Liste des produits</a></li>
+  </ul>
+</div>
+<!--SEARCH INPUT-->
+<div class="container-fluid search">
+  <form class="d-flex input-form">
+    <input class="form-control input-search" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success btn-search" type="submit">
+      <mat-icon>search</mat-icon>
     </button>
-  </span>
-  <span *ngIf="!user">
-    <button mat-icon-button aria-label="Account icon">
-      <mat-icon>account_box</mat-icon>
-    </button>
-  </span>
-</mat-toolbar>
+  </form>
+</div>

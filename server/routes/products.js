@@ -2,8 +2,8 @@ const router = require("express").Router();
 const mongoose = require("mongoose");
 const Products = require("../models/products.model");
 const jwt = require('jsonwebtoken');
-const { query } = require("express");
 const Users = require("../models/users.model");
+const { run_search_by_id } = require("./utility function/bdd_query");
 
 
 function decode_bearer(req){
@@ -30,7 +30,7 @@ async function IDvalideur(test_longeur_input,res){
   }
 }
 
-
+/*
 router.get("/search", (req, res) => {
   if (req.query.search != undefined) {
     run_search()
@@ -65,8 +65,40 @@ router.get("/search", (req, res) => {
       res.end()
     }
   }
-
 });
+*/
+
+router.get("/search", (req, res) => {
+  requete = request_construct(req)
+  run_search(requete, res)
+})
+
+async function run_100_last(){
+  const product = await Products.find().sort({ _id: -1 }).limit(100).populate("categories").populate("users")
+  return product
+}
+
+function request_construct(req,res){
+  var requete = {};
+    if (req.query.name != undefined){
+      const regex = new RegExp(req.query.name, 'i')
+      requete = {...requete, name: {$regex: regex}}
+      console.log(requete)
+    }
+    if (req.query.categories != undefined){
+      requete = {...requete, categories: req.query.category }
+    }
+    if (req.query.entreprise != undefined){
+      requete = {...requete, entreprise: req.query.entreprise }
+    }
+    return requete
+  }
+
+async function run_search(requete,res){
+  const product = await Products.find({$and: [requete]})
+  res.json(product)
+  res.end()
+}
 
 router.get("/like", (req, res) => {
   decoded_bearer = decode_bearer(req)

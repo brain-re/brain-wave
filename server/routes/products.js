@@ -30,63 +30,19 @@ async function IDvalideur(test_longeur_input,res){
   }
 }
 
-/*
-router.get("/search", (req, res) => {
-  if (req.query.search != undefined) {
-    run_search()
-  } 
-  else if (req.query.search_categorie != undefined) {
-    run_search_categorie()
-  }
-  else {
-    run_100_last()
-  }
-
-  async function run_search(){
-    //The part below permit to insensitive the query
-    const regex = new RegExp(req.query.search, 'i')
-    const product = await Products.find({ $or: [{ name : {$regex: regex}},{ description : {$regex: regex}} ]}).populate("categories").populate("users")
-    res.json(product)
-    res.end()
-  }
-
-  async function run_100_last(){
-    const product = await Products.find().sort({ _id: -1 }).limit(100).populate("categories").populate("users")
-    res.json(product)
-    res.end()
-  }
-
-  async function run_search_categorie(){
-    try{
-    const product = await Products.find({ categories : req.query.search_categorie }).populate("categories").populate("users")
-    res.json(product)
-    } catch (error) {
-      res.json("[+] The category you are looking for is not valid")
-      res.end()
-    }
-  }
-});
-*/
-
 router.get("/search", (req, res) => {
   requete = request_construct(req)
-  run_search(requete, res)
+  run_search(requete,req,res)
 })
 
-async function run_100_last(){
-  const product = await Products.find().sort({ _id: -1 }).limit(100).populate("categories").populate("users")
-  return product
-}
-
-function request_construct(req,res){
+function request_construct(req){
   var requete = {};
     if (req.query.name != undefined){
       const regex = new RegExp(req.query.name, 'i')
       requete = {...requete, name: {$regex: regex}}
-      console.log(requete)
     }
     if (req.query.categories != undefined){
-      requete = {...requete, categories: req.query.category }
+      requete = {...requete, categories: req.query.categories }
     }
     if (req.query.entreprise != undefined){
       requete = {...requete, entreprise: req.query.entreprise }
@@ -94,9 +50,26 @@ function request_construct(req,res){
     return requete
   }
 
-async function run_search(requete,res){
-  const product = await Products.find({$and: [requete]})
-  res.json(product)
+async function run_search(requete,req,res){
+  var sort = {};
+  if (req.query.prix != undefined){
+    if (req.query.prix == "-1" || req.query.prix == "1"){
+      var sort = {...sort, price: req.query.prix}
+    }
+  }
+  if (req.query.like != undefined){
+    if (req.query.like == "-1" || req.query.like == "1"){
+      var sort = {...sort, count_liked: req.query.like}
+    }
+  }
+  if (req.query.dislike != undefined){
+    if (req.query.dislike == "-1" || req.query.dislike == "1"){
+      var sort = {...sort, count_disliked: req.query.dislike}
+    }
+  }
+  console.log(sort)
+  const products = await Products.find({$and: [requete]}).sort(sort).populate("categories").populate("entreprises")
+  res.json(products)
   res.end()
 }
 
@@ -113,6 +86,31 @@ router.get("/like", (req, res) => {
     });
   })
 
+  async function count_like(){
+    try{
+      const count = await Products.find({_id: req.query.product_id})
+      console.log(count)
+      await Products.findOneAndUpdate(
+        {_id: req.query.product_id},
+        {$set : {count_liked: count[0].liked.length} },
+        {upsert: true},
+        );
+      } catch (error){console.log(error)}
+  }
+
+  async function count_dislike(){
+    try{
+      const count = await Products.find({_id: req.query.product_id})
+      console.log(count)
+      await Products.findOneAndUpdate(
+        {_id: req.query.product_id},
+        {$set : {count_disliked: count[0].disliked.length} },
+        {upsert: true},
+        );
+      } catch (error){console.log(error)}
+  }
+
+
   async function remove_liked_product(){
     try{
     const already_liked = await Products.updateOne(
@@ -128,6 +126,7 @@ router.get("/like", (req, res) => {
       console.log(error)
       res.end()
     }
+    count_like()
     console.log("[i] The entry for the like of user is removed")
   }
 
@@ -146,6 +145,7 @@ router.get("/like", (req, res) => {
       console.log(error)
       res.end()
     }
+    count_dislike()
     console.log("[i] The entry for the dislike of user and the product is removed")
   }
 
@@ -175,7 +175,7 @@ router.get("/like", (req, res) => {
 
         if (liked === "already liked"){
           remove_liked_product()
-          res.status(401).send("[+] The product is no longer liked")
+          res.status(200).send("[+] The product is no longer liked")
           res.end()
         }
         else if (disliked === "already disliked"){
@@ -207,6 +207,7 @@ router.get("/like", (req, res) => {
         console.log(error)
         res.end()
       }
+      count_like()
       res.status(200).send("[+] The product is succefully liked")
       res.end()
     }
@@ -264,6 +265,7 @@ router.get("/like", (req, res) => {
           console.log(error)
           res.end()
         }
+        count_dislike()
         res.status(200).send("[+] The product is succefully disliked")
         res.end()
       }

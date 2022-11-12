@@ -10,7 +10,9 @@ const ProductsSchema = new Schema({
     createdAt : {type: Date, default: () => Date.now()},
     creator : { type: Schema.Types.ObjectId, ref: 'users', required : [true, 'Ceci n\'est pas un utilisateur valide']},
     liked : [{ type: Schema.Types.ObjectId, ref: 'users'}],
+    count_liked : { type: Number},
     disliked : [{ type: Schema.Types.ObjectId, ref: 'users'}],
+    count_disliked : { type: Number},
     entreprise : [{ type : Schema.Types.ObjectId, ref: 'entreprises'}]
   });
 

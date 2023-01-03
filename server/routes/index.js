@@ -37,6 +37,7 @@ const rights = {
 
   "/api/users/search":[[role_administrator]],
   "/api/users/create":[[role_administrator]],
+  "/api/users/updatepassword":[[role_administrator],[role_creator],[role_user]],
 
   "/api/categories/create":[[role_administrator],[role_creator]],
 
@@ -118,6 +119,7 @@ const users = require("./users")
 router.use("/api/users/create", users)
 router.use('/api/users/search',check_user, users)
 router.use("/api/users/login", users)
+router.use("/api/users/updatepassword", check_user, users)
 router.use("/api/users", users)
 
 const roles = require("./roles")

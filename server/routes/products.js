@@ -52,22 +52,15 @@ function request_construct(req){
 
 async function run_search(requete,req,res){
   var sort = {};
-  if (req.query.prix != undefined){
-    if (req.query.prix == "-1" || req.query.prix == "1"){
+   if (req.query.prix == "-1" || req.query.prix == "1"){
       var sort = {...sort, price: req.query.prix}
-    }
-  }
-  if (req.query.like != undefined){
-    if (req.query.like == "-1" || req.query.like == "1"){
+   }
+  if (req.query.like == "-1" || req.query.like == "1"){
       var sort = {...sort, count_liked: req.query.like}
-    }
-  }
-  if (req.query.dislike != undefined){
-    if (req.query.dislike == "-1" || req.query.dislike == "1"){
+   }
+  if (req.query.dislike == "-1" || req.query.dislike == "1"){
       var sort = {...sort, count_disliked: req.query.dislike}
-    }
   }
-  console.log(sort)
   const products = await Products.find({$and: [requete]}).sort(sort).populate("categories").populate("entreprises")
   res.json(products)
   res.end()

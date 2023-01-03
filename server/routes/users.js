@@ -1,11 +1,11 @@
 const dotenv = require('dotenv').config({path: __dirname + '/.env'});
 const router = require("express").Router();
-const mongoose = require("mongoose");
 const users = require("../models/users.model")
-const roles = require("../models/roles.model")
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
 const jwt = require('jsonwebtoken');
+//Imported function
+var funct_decode_bearer = require('./utility function/decode_jwt.js').decode_bearer;
+
 
 //send JWT for authenticate Users
 async function send_JWT(check_user,res){
@@ -87,5 +87,23 @@ router.post("/create", (req, res) => {
     }
   });
 });
+
+router.post('/updatepassword',async (req,res) => {
+  //decodeJWT
+  jwt_decoded = funct_decode_bearer(req)
+  console.log(req.body['current_password'])
+  
+
+  //get passwd in mongo bdd for compare with the value "current passwd"
+  const user = await users.findById(jwt_decoded.user);
+  const isMatch = await bcrypt.compare(req.body['current_password'], user.password)
+  if (!isMatch) return res.status(400).json({ msg: 'Current password is incorrect' });
+
+  //replace the current password with the new passwd
+  user.password = req.body['newpassword'];
+  await user.save();
+
+  res.json({ msg: 'Password updated successfully' });
+})
 
 module.exports = router;

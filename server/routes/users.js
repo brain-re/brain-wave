@@ -100,7 +100,7 @@ router.post('/updatepassword',async (req,res) => {
   if (!isMatch) return res.status(400).json({ msg: 'Current password is incorrect' });
 
   //replace the current password with the new passwd
-  user.password = req.body['newpassword'];
+  user.password = req.body['new_password'];
   await user.save();
 
   res.json({ msg: 'Password updated successfully' });

@@ -32,7 +32,7 @@ const rights = {
   "/api/roles/create": [[role_administrator]],
 
   "/api/products/like": [[role_administrator],[role_creator],[role_user]],
-  "/api/products/create": [[role_administrator],[role_creator]],
+  "/api/products/create_user": [[role_administrator],[role_creator]],
   "/api/products/delete": [[role_administrator],[role_creator]],
 
   "/api/users/search":[[role_administrator]],
@@ -40,6 +40,7 @@ const rights = {
   "/api/users/updatepassword":[[role_administrator],[role_creator],[role_user]],
 
   "/api/categories/create":[[role_administrator],[role_creator]],
+  "/api/users/create_power_user":[[role_administrator]],
 
   "/api/token/refresh_token":[[role_administrator],[role_creator],[role_user]],
 
@@ -116,7 +117,8 @@ const user = require("./user")
 router.use("/api/user/current", check_user, user)
 
 const users = require("./users")
-router.use("/api/users/create", users)
+router.use("/api/users/create_user", users)
+router.use("/api/users/create_power_user", check_user, users)
 router.use('/api/users/search',check_user, users)
 router.use("/api/users/login", users)
 router.use("/api/users/updatepassword", check_user, users)

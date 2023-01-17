@@ -66,7 +66,29 @@ router.post("/login", (req, res) => {
   check_user_existing()
 });
 
-router.post("/create", (req, res) => {
+router.post("/create_user", (req, res) => {
+  const create_users = new users ({
+    firstname: req.body['firstname'],
+    lastname: req.body['lastname'],
+    email: req.body['email'],
+    roles: '6288df5bfb6f79012342f80a',
+    password: req.body['password'],
+  });
+
+  create_users.save(function(err){
+    if (err) {
+      console.log(err);
+      res.send(400, 'Bad Request or user already exist')
+      res.end()
+    }
+    else{
+      res.json("[+] User created")
+      res.end()
+    }
+  });
+});
+
+router.post("/create_power_user", (req, res) => {
   const create_users = new users ({
     firstname: req.body['firstname'],
     lastname: req.body['lastname'],
@@ -82,7 +104,7 @@ router.post("/create", (req, res) => {
       res.end()
     }
     else{
-      res.json("[+]User created")
+      res.json("[+] User created")
       res.end()
     }
   });

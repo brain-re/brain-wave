@@ -11,13 +11,13 @@ router.post("/", (req, res) => {
     }
     else {
         const create_entreprises = new entreprise ({
-            name: req.body['name'],
-            description: req.body['description'],
-            url: req.body['url'],
-            adresse: req.body['adresse'],
-            proprietaire: req.body['proprietaire'],
-            numeros: req.body['numeros'],
-            commentaire: req.body['commentaire'],
+            name: req.body['name'].trim(),
+            description: req.body['description'].trim(),
+            url: req.body['url'].trim(),
+            adresse: req.body['adresse'].trim(),
+            proprietaire: req.body['proprietaire'].trim(),
+            numeros: req.body['numeros'].trim(),
+            commentaire: req.body['commentaire'].trim(),
             });
             create_entreprises.save(function(err){
               if (err) {

@@ -12,13 +12,13 @@ router.post("/", (req, res) => {
     else {
         const entreprises = new proposition_entreprises ({
             validate_by_admin: 'false',
-            name: req.body['name'],
-            description: req.body['description'],
-            url: req.body['url'],
-            adresse: req.body['adresse'],
-            proprietaire: req.body['proprietaire'],
-            numeros: req.body['numeros'],
-            commentaire: req.body['commentaire'],
+            name: req.body['name'].trim(),
+            description: req.body['description'].trim(),
+            url: req.body['url'].trim(),
+            adresse: req.body['adresse'].trim(),
+            proprietaire: req.body['proprietaire'].trim(),
+            numeros: req.body['numeros'].trim(),
+            commentaire: req.body['commentaire'].trim(),
             });
             entreprises.save(function(err){
               if (err) {

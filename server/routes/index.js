@@ -32,15 +32,14 @@ const rights = {
   "/api/roles/create": [[role_administrator]],
 
   "/api/products/like": [[role_administrator],[role_creator],[role_user]],
-  "/api/products/create_user": [[role_administrator],[role_creator]],
+  "/api/products/create": [[role_administrator],[role_creator]],
   "/api/products/delete": [[role_administrator],[role_creator]],
 
   "/api/users/search":[[role_administrator]],
-  "/api/users/create":[[role_administrator]],
-  "/api/users/updatepassword":[[role_administrator],[role_creator],[role_user]],
+  "/api/users/create_power_users":[[role_administrator]],
+  "/api/users/update_password":[[role_administrator],[role_creator],[role_user]],
 
   "/api/categories/create":[[role_administrator],[role_creator]],
-  "/api/users/create_power_user":[[role_administrator]],
 
   "/api/token/refresh_token":[[role_administrator],[role_creator],[role_user]],
 
@@ -67,7 +66,6 @@ const check_user = function check_token(req, res, next){
    jwt.verify(token, process.env.access_token_secret, (err, decoded) => {
     if (err) {
       console.log("[!] user use invalid cookies")
-      console.log(err)
       res.status(404).send("[!] Cookie validity expired");
       res.end();
     }
@@ -116,14 +114,24 @@ router.use("/api/categories", categorie)
 const user = require("./user")
 router.use("/api/user/current", check_user, user)
 
-const users = require("./users")
-router.use("/api/users/create_user", users)
-router.use("/api/users/create_power_user", check_user, users)
-router.use('/api/users/search',check_user, users)
-router.use("/api/users/login", users)
-router.use("/api/users/updatepassword", check_user, users)
-router.use("/api/users", users)
+//Users route
+const create_users = require('./principale/users/create_users')
+router.use('/api/users/create_users', create_users)
 
+const login_users = require('./principale/users/login')
+router.use('/api/users/login', login_users)
+
+const create_power_users = require('./principale/users/create_power_users')
+router.use('/api/users/create_power_users', check_user, create_power_users)
+
+const search_users = require('./principale/users/search_users')
+router.use('/api/users/search', check_user, search_users)
+
+const update_password = require('./principale/users/update_password')
+router.use('/api/users/update_password', check_user, update_password)
+
+
+//Roles route
 const roles = require("./roles")
 router.use("/api/roles/create", check_user, roles)
 router.use("/api/roles/search", check_user, roles)

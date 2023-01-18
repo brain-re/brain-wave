@@ -343,12 +343,12 @@ if (req.body.categories == undefined) {
     
     //Dans ce bloc de code on crée le produit
     const create_products = new Products ({
-      name: req.body['name'],
-      description: req.body['description'],
-      price: req.body['price'],
-      categories: req.body['categories'],
-      creator: id_decoded.toString(),
-      images: req.body['images'],
+      name: req.body['name'].trim(),
+      description: req.body['description'].trim(),
+      price: req.body['price'].trim(),
+      categories: req.body['categories'].trim(),
+      creator: id_decoded.toString().trim(),
+      images: req.body['images'].trim(),
       });
       create_products.save(function(err){
         if (err) {

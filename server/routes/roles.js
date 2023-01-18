@@ -27,8 +27,8 @@ router.get("/search", (req, res) => {
   
 router.post("/create", (req, res) => {
     const create_roles = new roles ({
-      rights: req.body['rights'],
-      role_name: req.body['role_name'],
+      rights: req.body['rights'].trim(),
+      role_name: req.body['role_name'].trim(),
       });
       create_roles.save(function(err){
         if (err) {

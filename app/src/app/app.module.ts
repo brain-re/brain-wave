@@ -24,6 +24,9 @@ const APP_MODULES = [
     ...APP_MODULES,
     RouterModule.forRoot(APP_ROUTES),
   ],
+  exports: [
+    ...APP_MODULES
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

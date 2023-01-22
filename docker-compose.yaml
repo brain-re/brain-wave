@@ -8,8 +8,8 @@ services:
             - 4200:4200
             - 49153:49153
         volumes:
-            - ./app/src:/usr/app/src
-            - ./app/package.json:/usr/app/package.json
+            - ./app/:/usr/app/
+        entrypoint: ./entrypoint.sh
     express:
         build:
             context: ./server
@@ -44,3 +44,4 @@ services:
 volumes: 
     mongo_db:
         external: true
+    exclude:

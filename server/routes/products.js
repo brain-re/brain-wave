@@ -61,6 +61,9 @@ async function run_search(requete,req,res){
   if (req.query.dislike == "-1" || req.query.dislike == "1"){
       var sort = {...sort, count_disliked: req.query.dislike}
   }
+  if (req.query.limit == "-1" || req.query.limit == "1"){
+    var sort = {...sort, count_disliked: req.query.dislike}
+  }
   const products = await Products.find({$and: [requete]}).sort(sort).populate("categories").populate("entreprises")
   res.json(products)
   res.end()

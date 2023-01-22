@@ -99,20 +99,24 @@ const check_user = function check_token(req, res, next){
   }
 }
 
-const products = require("./products");
-router.use("/api/products/create", check_user, products)
-router.use("/api/products/like", check_user, products)
-router.use("/api/products/search", products)
-router.use("/api/products/delete", check_user, products)
-router.use("/api/products", products)
+//Products route
+const create_products = require('./principale/products/create_products')
+router.use('/api/products/create', check_user, create_products)
+
+const like_products = require('./principale/products/like_dislike_products')
+router.use('/api/products/like', check_user, like_products)
+
+const search_products = require('./principale/products/search_products')
+router.use('/api/products/search', search_products)
+
+const delete_products = require('./principale/products/detete_products')
+router.use('/api/products/delete', check_user, delete_products)
+
 
 const categorie = require("./categories")
 router.use("/api/categories/create", check_user, categorie)
 router.use("/api/categories/search", categorie)
 router.use("/api/categories", categorie)
-
-const user = require("./user")
-router.use("/api/user/current", check_user, user)
 
 //Users route
 const create_users = require('./principale/users/create_users')

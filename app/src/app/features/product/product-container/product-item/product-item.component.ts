@@ -9,6 +9,5 @@ import { IProduct } from 'src/app/logic/interfaces/product.interface';
 export class ProductItemComponent implements OnInit {
   @Input() product:IProduct = null;
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

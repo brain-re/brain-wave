@@ -8,13 +8,21 @@ import { AuthService } from 'src/app/domain/auth/service/auth.service';
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.scss'],
 })
-export class HomepageComponent implements OnInit, OnDestroy {
+export class HomepageComponent implements OnInit, OnDestroy
+{
+  public last_new_title = "Dernières nouveautés"
+  public most_seen = "Produit les plus vus"
+  public isConnect = false;
   public user?:string = null;
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.authService.token$.pipe(
-      tap((token: jwtToken) => this.user = token.token)
+      tap((token: jwtToken) => {
+        if (token.isAuthenticated == true) {
+          this.user = token.token;
+        }
+      })
     ).subscribe()
   }
 

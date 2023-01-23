@@ -1,7 +1,7 @@
 const dotenv = require('dotenv').config({path: __dirname + '/.env'});
 const router = require("express").Router();
 const jwt = require('jsonwebtoken');
-var funct_decode_bearer = require('./utility function/decode_jwt').decode_bearer;
+var funct_decode_bearer = require('../../utility function/decode_jwt').decode_bearer;
 
 function refresh_token(req,res){
   jwt_decoded = funct_decode_bearer(req)
@@ -26,7 +26,7 @@ function refresh_token(req,res){
   }
 
 
-router.get("/refresh_token", (req, res) => {
+router.get("/", (req, res) => {
   refresh_token(req, res)
 });
 

@@ -28,8 +28,8 @@ const role_creator = '6288dfd888de3002084436fb'
 
 
 const rights = {
-  "/api/roles": [[role_administrator]],
   "/api/roles/create": [[role_administrator]],
+  "/api/roles/search": [[role_administrator],[role_creator]],
 
   "/api/products/like": [[role_administrator],[role_creator],[role_user]],
   "/api/products/create": [[role_administrator],[role_creator]],
@@ -39,7 +39,7 @@ const rights = {
   "/api/users/create_power_users":[[role_administrator]],
   "/api/users/update_password":[[role_administrator],[role_creator],[role_user]],
 
-  "/api/categories/create":[[role_administrator],[role_creator]],
+  "/api/categories/create":[[role_administrator]],
 
   "/api/token/refresh_token":[[role_administrator],[role_creator],[role_user]],
 
@@ -112,37 +112,35 @@ router.use('/api/products/search', search_products)
 const delete_products = require('./principale/products/detete_products')
 router.use('/api/products/delete', check_user, delete_products)
 
+//Categories route-----------------------------------------------------------------------------------------------------------
+const create_categories = require('./principale/categories/create_categories')
+router.use('/api/categories/create', check_user, create_categories)
+const search_categories = require('./principale/categories/search_categories')
+router.use('/api/categories/search', search_categories)
 
-const categorie = require("./categories")
-router.use("/api/categories/create", check_user, categorie)
-router.use("/api/categories/search", categorie)
-router.use("/api/categories", categorie)
 
-//Users route
+//Users route-----------------------------------------------------------------------------------------------------------
 const create_users = require('./principale/users/create_users')
 router.use('/api/users/create_users', create_users)
-
 const login_users = require('./principale/users/login')
 router.use('/api/users/login', login_users)
-
 const create_power_users = require('./principale/users/create_power_users')
 router.use('/api/users/create_power_users', check_user, create_power_users)
-
 const search_users = require('./principale/users/search_users')
 router.use('/api/users/search', check_user, search_users)
-
 const update_password = require('./principale/users/update_password')
 router.use('/api/users/update_password', check_user, update_password)
 
 
-//Roles route
-const roles = require("./roles")
-router.use("/api/roles/create", check_user, roles)
-router.use("/api/roles/search", check_user, roles)
-router.use("/api/roles", roles)
+//Roles route-----------------------------------------------------------------------------------------------------------
+const search_roles = require('./principale/roles/search_roles')
+router.use('/api/roles/search',check_user, search_roles)
+const create_roles = require('./principale/roles/create_roles')
+router.use('/api/roles/create',check_user, create_roles)
 
-const token = require("./token")
-router.use("/api/token",check_user, token)
+// route-----------------------------------------------------------------------------------------------------------
+const refresh_token = require("./principale/token/token")
+router.use("/api/token/refresh_token",check_user, refresh_token)
 
 const global_rights = require('./client_check_rights/check_rights.js')
 router.use("/api/is_granted", global_rights)

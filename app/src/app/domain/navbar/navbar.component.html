@@ -4,10 +4,10 @@
     <button (click)="animate()" class="btn btn-link menuIcon" type="button"><mat-icon>menu</mat-icon></button>
       <img [routerLink]="['/']" src="assets/logo.png">
     <form class="d-flex">
-      <span *ngIf="null != user">
-        <button class="btn btn-outline-success btn-co" aria-label="Login icon" type="submit" [routerLink]="['auth/login']">Mon compte</button>
+      <span *ngIf="!userIsAuthenticated()">
+        <button class="btn btn-outline-success btn-co" aria-label="Login icon" type="submit" [routerLink]="['auth/login']">Se connecter</button>
       </span>
-      <span *ngIf="null == user">
+      <span *ngIf="userIsAuthenticated()">
         <button class="btn btn-outline-success btn-co" aria-label="Account icon" type="submit">Déconnexion</button>
       </span>
     </form>

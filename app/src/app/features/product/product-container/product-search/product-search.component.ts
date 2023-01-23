@@ -46,7 +46,6 @@ export class ProductSearchComponent implements OnInit {
 
   submit(form: FormGroup): void
   {
-    console.log('submit');
     if (!form || !form.valid) {
       return null;
     }

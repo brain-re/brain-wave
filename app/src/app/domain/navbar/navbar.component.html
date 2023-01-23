@@ -4,11 +4,11 @@
     <button (click)="animate()" class="btn btn-link menuIcon" type="button"><mat-icon>menu</mat-icon></button>
       <img [routerLink]="['/']" src="assets/logo.png">
     <form class="d-flex">
-      <span *ngIf="user">
-        <button class="btn btn-outline-success btn-co" aria-label="Login icon" type="submit" [routerLink]="['auth/login']">Mon compte</button>
+      <span *ngIf="!userIsAuthenticated()">
+        <button class="btn btn-outline-success btn-co" aria-label="Login icon" type="submit" [routerLink]="['auth/login']">Se connecter</button>
       </span>
-      <span *ngIf="!user">
-        <button class="btn btn-outline-success btn-co" aria-label="Account icon" type="submit" [routerLink]="['auth/login']">Déconnexion</button>
+      <span *ngIf="userIsAuthenticated()">
+        <button class="btn btn-outline-success btn-co" aria-label="Account icon" type="submit">Déconnexion</button>
       </span>
     </form>
   </div>
@@ -28,9 +28,8 @@
 <!--SEARCH INPUT-->
 <div class="container-fluid search">
   <form class="d-flex input-form">
-    <input class="form-control input-search" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success btn-search" type="submit">
-      <mat-icon>search</mat-icon>
-    </button>
+    <app-product-search></app-product-search>
+    <button class="btn btn-outline-success btn-search" type="submit"></button>
+    <mat-icon>search</mat-icon>
   </form>
 </div>

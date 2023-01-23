@@ -7,7 +7,11 @@ import { BaseFormBuilder } from "src/app/shared/form/base-form.builder";
 @Injectable({
   providedIn: 'root',
 })
-export class ProductSearchFormBuilder extends BaseFormBuilder {
+export class ProductSearchFormBuilder extends BaseFormBuilder
+{
+  constructor() {
+    super();
+  }
 
   public build(data: ISearchProduct = {search: ''}): FormGroup
   {

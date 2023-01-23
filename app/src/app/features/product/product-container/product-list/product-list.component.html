@@ -1,7 +1,6 @@
 <mat-toolbar>
-  Liste des produits
+  {{ title }}
 </mat-toolbar>
-<app-product-form></app-product-form>
 <div class="d-grid">
   <div *ngFor="let _product of products$ | async">
     <app-product-item [product]="_product"></app-product-item>
@@ -13,7 +12,7 @@
     <mat-icon>keyboard_return</mat-icon>
   </button>
 
-  <button color="primary" style="float: right;" mat-fab routerLink="/products/new">
+  <button color="primary" style="float: right;" mat-fab [routerLink]="['/products/new']">
     <mat-icon>add</mat-icon>
   </button>
 </div>

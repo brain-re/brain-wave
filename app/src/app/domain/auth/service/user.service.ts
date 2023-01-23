@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { user } from 'src/app/logic/class/user.class';
 import { AuthService } from './auth.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 const HTTP_API = '/api';
 
@@ -12,26 +13,16 @@ const HTTP_API = '/api';
 })
 export class UserService {
   public currentUser$: BehaviorSubject<user> = new BehaviorSubject(null);
-  constructor(private http: HttpClient, private authService: AuthService) {
-    this.authService.token$.pipe(
-      tap(function(token) {
-        if (null != token) {
-          // There is a token
-          this.refreshUser();
-        }
-      })
-    ).subscribe()
-  }
-
-  public getCurrentUser(): Observable<user> {
-    return this.http.get<user>(`${HTTP_API}/user/current`).pipe(
-      tap((user: user) => this.currentUser$.next(user)),
-      switchMap(() => this.currentUser$)
-    );
-  }
-
-  public refreshUser(): void
+  private jwtService: JwtHelperService;
+  constructor(private http: HttpClient, private authService: AuthService)
   {
-    this.getCurrentUser();
+    this.jwtService = new JwtHelperService();
+    this.refreshUser();
+  }
+
+  public refreshUser(): void {
+    this.authService.token$.pipe(
+      tap((token) => this.currentUser$.next((token != null && token.isAuthenticated) ? this.jwtService.decodeToken(token.token) : null))
+    ).subscribe()
   }
 }

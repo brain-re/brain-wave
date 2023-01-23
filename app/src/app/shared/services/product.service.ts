@@ -14,6 +14,7 @@ export class ProductService {
   public products$: BehaviorSubject<IProduct[]> = new BehaviorSubject(null);
 
   constructor(private http: HttpClient) {
+    console.log(`products$ ${this.products$}`);
     this.fetch().subscribe();
   }
 

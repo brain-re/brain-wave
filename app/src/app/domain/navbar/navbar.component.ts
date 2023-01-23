@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs/operators';
-import { jwtToken } from '../auth/model/jwt-token.model';
-import { AuthService } from '../auth/service/auth.service';
+import { BehaviorSubject } from 'rxjs';
+import { user } from 'src/app/logic/class/user.class';
+import { UserService } from '../auth/service/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,20 +10,12 @@ import { AuthService } from '../auth/service/auth.service';
 })
 
 export class NavbarComponent implements OnInit {
-  public user?:string = null;
-  constructor(private authService: AuthService) {}
+  public user$:BehaviorSubject<user> = this.userService.currentUser$;
+  constructor(private userService: UserService) {}
 
-  ngOnInit(): void {
-    this.authService.token$.pipe(
-      tap(function(token: jwtToken)
-          {
-            this.user = token.token;
-            console.log(this.user);
-          }
-      )
-    ).subscribe()
-  }
-  animate(){
+  ngOnInit(): void {}
+
+  public animate(){
     //init background canvas
     const canvas = document.createElement('div')
     canvas.setAttribute('id', 'canvasBackground');
@@ -41,5 +33,11 @@ export class NavbarComponent implements OnInit {
       sidebar.setAttribute('id','notactive')
       getCanvas.style.cssText = ''
     }
+  }
+
+  public userIsAuthenticated():boolean
+  {
+    console.log(this.user$.value);
+    return null !== this.user$.value;
   }
 }

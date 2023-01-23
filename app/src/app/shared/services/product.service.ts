@@ -13,7 +13,10 @@ const HTTP_API = '/api';
 export class ProductService {
   public products$: BehaviorSubject<IProduct[]> = new BehaviorSubject(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    console.log(`products$ ${this.products$}`);
+    this.fetch().subscribe();
+  }
 
   public fetch(): Observable<IProduct[]> {
     return this.http.get<IProduct[]>(`${HTTP_API}/products/search`)
@@ -27,7 +30,7 @@ export class ProductService {
   public search(searchProduct: ISearchProduct): Observable<IProduct[]>
   {
     let search = searchProduct.search;
-    return this.http.get<IProduct[]>(`${HTTP_API}/products/search?search=${search}`)
+    return this.http.get<IProduct[]>(`${HTTP_API}/products/search?name=${search}`)
     .pipe(
       debounceTime(500),
       tap(data => {
@@ -37,8 +40,6 @@ export class ProductService {
   }
 
   public create(product: IProduct) {
-    console.log('create', product);
-
     this.http.post(`${HTTP_API}/products/create`, product).subscribe();
   }
 }

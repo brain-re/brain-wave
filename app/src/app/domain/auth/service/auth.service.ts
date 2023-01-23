@@ -16,8 +16,19 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     // Autoload jwt token if it exist in user local storage
+    this.init()
+  }
+
+  /**
+   * Initialize local authentication token
+   */
+  public init(): void
+  {
     const token = localStorage.getItem(JWT_LOCALE_KEY);
-    this.registerJwt(token);
+    if (token) {
+      localStorage.setItem(JWT_LOCALE_KEY, token);
+      this.token$.next(new jwtToken(token, true));
+    }
   }
 
   /**
@@ -42,9 +53,7 @@ export class AuthService {
     return this.http.post<{bearer: string}>(`${HTTP_API}/users/login`, credentials)
     .pipe(
       map((res: {bearer: string}) => res.bearer),
-      tap((jwt: string) => {
-        this.registerJwt(jwt);
-      }),
+      tap((jwt: string) => this.registerJwt(jwt)),
       map(() => this.token$.value) // Return the token
     );
   }

@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import { IProduct } from 'src/app/logic/interfaces/product.interface';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { ProductSearchFormBuilder } from './form/product-search.form';
 
 @Component({
-  selector: 'app-product-form',
+  selector: 'app-product-search',
   templateUrl: './product-search.component.html',
   styleUrls: ['./product-search.component.scss']
 })
 export class ProductSearchComponent implements OnInit {
-  public products$: BehaviorSubject<IProduct[]>;
   public productSearchForm: FormGroup = new FormGroup({});
 
   constructor(

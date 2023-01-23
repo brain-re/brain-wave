@@ -15,7 +15,12 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.token$.pipe(
-      tap((token: jwtToken) => this.user = token.token)
+      tap(function(token: jwtToken)
+          {
+            this.user = token.token;
+            console.log(this.user);
+          }
+      )
     ).subscribe()
   }
   animate(){

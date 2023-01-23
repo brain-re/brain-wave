@@ -18,16 +18,10 @@ services:
             - 80:3000
         volumes:
             - ./public:/express/public
-            - ./server/models:/express/models
-            - ./server/routes:/express/routes
-            - ./server/migrations:/express/migrations
-            - ./server/helpers:/express/helpers
-            - ./server/services:/express/services
-            - ./server/fixtures:/express/fixtures
-            - ./server/app.js:/express/app.js
-            - ./server/package.json:/express/package.json
+            - ./server/:/express
         depends_on: 
             - angular
+        entrypoint: ./entrypoint.sh
     mongo:
         image: mongo
         restart: always

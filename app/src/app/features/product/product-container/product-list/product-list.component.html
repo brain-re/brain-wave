@@ -2,7 +2,7 @@
   {{ title }}
 </mat-toolbar>
 <div class="d-grid">
-  <div *ngFor="let _product of products">
+  <div *ngFor="let _product of products$ | async">
     <app-product-item [product]="_product"></app-product-item>
   </div>
 </div>

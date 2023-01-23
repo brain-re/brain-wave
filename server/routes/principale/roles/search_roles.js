@@ -1,8 +1,8 @@
 const router = require("express").Router();
-const mongoose = require("mongoose");
-const roles = require("../models/roles.model")
+const roles = require("../../../models/roles.model")
 
-router.get("/search", (req, res) => {
+
+router.get("/", (req, res) => {
     if (req.query.search === undefined) {
       run_100_last()
     } else {
@@ -24,22 +24,5 @@ router.get("/search", (req, res) => {
       res.end()
     }
   });
-  
-router.post("/create", (req, res) => {
-    const create_roles = new roles ({
-      rights: req.body['rights'].trim(),
-      role_name: req.body['role_name'].trim(),
-      });
-      create_roles.save(function(err){
-        if (err) {
-          res.send(400, 'Bad Request or roles already exist')
-          res.end()
-        }
-        else{
-          res.json("[+]roles created")
-          res.end()
-        }
-      })
-});
 
 module.exports = router;

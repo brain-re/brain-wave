@@ -1,9 +1,7 @@
 const router = require("express").Router();
-const mongoose = require("mongoose");
-const categories = require("../models/categories.model");
+const categories = require("../../../models/categories.model");
 
-
-router.get("/search", (req, res) => {
+router.get("/", (req, res) => {
   if (req.query.search === undefined) {
     run_list_categories()
   } else {
@@ -25,25 +23,5 @@ router.get("/search", (req, res) => {
     res.end();
     }
 });
-
-
-router.post("/create", (req, res) => {
-    const create_categories = new categories ({
-      name: req.body['name'],
-      description: req.body['description'],
-      });
-      create_categories.save(function(err){
-        if (err) {
-          console.log(err);
-          res.send(400, 'Bad Request or categories already exist')
-          res.end()
-        }
-        else{
-          res.json("[+]categories created")
-          res.end()
-        }
-      })
-});
-
 
 module.exports = router;

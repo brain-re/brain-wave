@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IProduct } from '../../logic/interfaces/product.interface';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, filter, tap } from 'rxjs/operators';
 import { ISearchProduct } from 'src/app/features/product/product-container/product-search/form/product-search.type';
 
 const HTTP_API = '/api';
@@ -41,5 +41,10 @@ export class ProductService {
 
   public create(product: IProduct) {
     this.http.post(`${HTTP_API}/products/create`, product).subscribe();
+  }
+
+  public getById(id: string): Observable<IProduct>
+  {
+    return this.http.get<IProduct>(`${HTTP_API}/products/search?_id=${id}`)
   }
 }

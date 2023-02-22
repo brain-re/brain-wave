@@ -37,7 +37,6 @@ export class NavbarComponent implements OnInit {
 
   public userIsAuthenticated():boolean
   {
-    console.log(this.user$.value);
     return null !== this.user$.value;
   }
 }

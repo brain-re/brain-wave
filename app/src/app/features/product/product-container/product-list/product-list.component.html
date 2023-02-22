@@ -3,7 +3,7 @@
 </mat-toolbar>
 <div class="d-grid">
   <div *ngFor="let _product of products$ | async">
-    <app-product-item [product]="_product"></app-product-item>
+    <app-product-item [routerLink]="['/product', _product._id]" [product]="_product"></app-product-item>
   </div>
 </div>
 
@@ -12,7 +12,7 @@
     <mat-icon>keyboard_return</mat-icon>
   </button>
 
-  <button color="primary" style="float: right;" mat-fab [routerLink]="['/products/new']">
+  <button color="primary" style="float: right;" mat-fab [routerLink]="['/product/new']">
     <mat-icon>add</mat-icon>
   </button>
 </div>

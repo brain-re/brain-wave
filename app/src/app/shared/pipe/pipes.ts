@@ -1,17 +1,14 @@
 import { NgModule } from '@angular/core';
-import { DebugPipe } from './debug.pipe';
 import { IsStringPipe } from './filterstring.pipe';
 
 
 @NgModule({
 	declarations: [
-		IsStringPipe,
-    DebugPipe
+		IsStringPipe
 	],
 	imports: [],
 	exports: [
-		IsStringPipe,
-    DebugPipe
+		IsStringPipe
 	]
 })
 

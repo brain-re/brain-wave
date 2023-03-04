@@ -13,7 +13,7 @@ export class ProductSearchFormBuilder extends BaseFormBuilder
     super();
   }
 
-  public build(data: ISearchProduct = {search: ''}): FormGroup
+  public build(data: ISearchProduct = {search: '', category: ''}): FormGroup
   {
     return super.build({
       search: [
@@ -22,6 +22,10 @@ export class ProductSearchFormBuilder extends BaseFormBuilder
           Validators.minLength(3),
           Validators.maxLength(100)
         ]
+      ],
+      category: [
+        data.category,
+        []
       ]
     });
   }

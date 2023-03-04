@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const { rejects } = require("assert");
 const Products = require("../../../models/products.model");
 
 router.get("/",  (req, res) => {
@@ -28,25 +27,22 @@ function request_construct(req){
       requete = {...requete, name: {$regex: regex}}
     }
     if (req.query.categories != undefined){
-      requete = {...requete, categories: req.query.categories }
+      requete = {...requete, category: req.query.categories }
     }
     if (req.query.entreprise != undefined){
       requete = {...requete, entreprise: req.query.entreprise }
     }
-    if (req.query._id != undefined) {
-      requete = {...requete, _id: req.query._id }
-    }
     return requete
 }
   
-function run_search(requete,req,res){
+function run_search(requete,req){
   var sort = {};
-    if (req.query.prix == "-1" || req.query.prix == "1"){
-      var sort = {...sort, price: req.query.prix}
-    }
+  if (req.query.prix == "-1" || req.query.prix == "1"){
+    var sort = {...sort, price: req.query.prix}
+  }
   if (req.query.like == "-1" || req.query.like == "1"){
       var sort = {...sort, count_liked: req.query.like}
-    }
+  }
   if (req.query.dislike == "-1" || req.query.dislike == "1"){
       var sort = {...sort, count_disliked: req.query.dislike}
   }

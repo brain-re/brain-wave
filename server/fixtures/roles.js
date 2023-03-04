@@ -20,9 +20,9 @@ module.exports = () =>
             }),
         ]
     )
-    .then((roles) => rolesModel.bulkSave(roles).then())
-    .catch((res) => {
-        if (res.code == 11000) {
+    .then((roles) => rolesModel.bulkSave(roles))
+    .catch((err) => {
+        if (err.code == 11000) {
             console.log("🚩 Roles insertion was stopped as database contains dupplicate keys");
         } else {
             throw err;

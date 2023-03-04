@@ -1,7 +1,10 @@
+import { Observable } from "rxjs";
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { ProductSearchFormBuilder } from './form/product-search.form';
+import { ICategory } from 'src/app/logic/interfaces/category.interface';
+import { CategoryService } from "../../../../shared/services/category.service";
 
 @Component({
   selector: 'app-product-search',
@@ -10,10 +13,12 @@ import { ProductSearchFormBuilder } from './form/product-search.form';
 })
 export class ProductSearchComponent implements OnInit {
   public productSearchForm: FormGroup = new FormGroup({});
+  public categories$: Observable<ICategory[]> = this.categoryService.fetch();
 
   constructor(
     private productSearchFormBuilder: ProductSearchFormBuilder,
-    private productService: ProductService
+    private productService: ProductService,
+    private categoryService: CategoryService,
   ) {}
 
   ngOnInit(): void {
@@ -22,6 +27,10 @@ export class ProductSearchComponent implements OnInit {
 
   initForm() {
     this.productSearchForm = this.productSearchFormBuilder.withSubmit((_form: FormGroup) => {this.submit(_form)}).build();
+  }
+
+  get category(): AbstractControl|null {
+    return this.productSearchForm.get('category');
   }
 
   get search(): AbstractControl|null {

@@ -23,7 +23,7 @@
     <mat-form-field *ngIf="categories" appearance="fill">
       <mat-label>Select</mat-label>
       <mat-select formControlName="categories" multiple>
-        <div *ngFor="let categorie of categories$">
+        <div *ngFor="let categorie of categories$ | async">
           <mat-option [value]="categorie._id">
             {{categorie.name}}
           </mat-option>

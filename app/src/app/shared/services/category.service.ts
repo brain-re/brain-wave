@@ -18,8 +18,10 @@ export class CategoryService {
     return this.http.get<ICategory[]>(`${HTTP_API}/categories/search`)
         .pipe(
           tap((category: ICategory[]) => {
-          this.categories$.next(category);
-        })
-      );
+            console.log(category);
+
+            this.categories$.next(category);
+          })
+        );
   }
 }

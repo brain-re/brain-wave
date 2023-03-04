@@ -1,4 +1,15 @@
 <form [formGroup]="productSearchForm" class="mt-20 form-big" [style]="search.pristine?'':'display: flex;'">
+  <mat-form-field appearance="fill">
+    <mat-label>Select</mat-label>
+    <mat-select formControlName="category">
+      <mat-option [value]="0">
+        Toutes nos catégories
+      </mat-option>
+      <mat-option *ngFor="let categorie of categories$ | async" [value]="categorie._id">
+        {{categorie.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
   <mat-form-field *ngIf="search" appearance="outline" class="field-big">
     <mat-label>Search something cool</mat-label>
     <input matInput formControlName="search" type="text" (change)="onSearchChange($event)" (click)="onClick($event)"/>

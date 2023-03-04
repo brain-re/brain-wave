@@ -1,3 +1,4 @@
 export interface ISearchProduct {
-  search: string
+  search: string,
+  category: string
 }

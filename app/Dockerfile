@@ -13,4 +13,4 @@ EXPOSE 4200 49153
 RUN chmod +x entrypoint.sh && dos2unix entrypoint.sh
 
 # Unable 'ng' cli in the container
-RUN npm install -g @angular/cli && ngx-bootstrap --save
+RUN npm install -g @angular/cli

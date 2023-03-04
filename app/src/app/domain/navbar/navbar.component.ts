@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { user } from 'src/app/logic/class/user.class';
+import { ProductService } from 'src/app/shared/services/product.service';
 import { UserService } from '../auth/service/user.service';
 
 @Component({
@@ -11,7 +12,11 @@ import { UserService } from '../auth/service/user.service';
 
 export class NavbarComponent implements OnInit {
   public user$:BehaviorSubject<user> = this.userService.currentUser$;
-  constructor(private userService: UserService) {}
+
+  constructor(
+    private userService: UserService,
+    private productService: ProductService
+  ) {}
 
   ngOnInit(): void {}
 

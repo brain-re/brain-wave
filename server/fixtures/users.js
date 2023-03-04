@@ -25,8 +25,8 @@ module.exports = () =>
         return users;
     })
     .then((users) => usersModel.bulkSave(users))
-    .catch((res) => {
-        if (res.code == 11000) {
+    .catch((err) => {
+        if (err.code == 11000) {
             console.log("🚩 Users insertion was stopped as database contains dupplicate keys");
         } else {
             throw err;

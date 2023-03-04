@@ -25,8 +25,6 @@ export class ProductDetailsComponent implements OnInit {
       .subscribe((product) => {
         this.product = product[0];
         this.isLoading = false;
-        console.log(this.product);
-
       });
     });
   }

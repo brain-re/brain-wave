@@ -14,7 +14,6 @@ export class ProductService {
   public products$: BehaviorSubject<IProduct[]> = new BehaviorSubject(null);
 
   constructor(private http: HttpClient) {
-    console.log(`products$ ${this.products$}`);
     this.fetch().subscribe();
   }
 
@@ -30,7 +29,8 @@ export class ProductService {
   public search(searchProduct: ISearchProduct): Observable<IProduct[]>
   {
     let search = searchProduct.search;
-    return this.http.get<IProduct[]>(`${HTTP_API}/products/search?name=${search}`)
+    let category = searchProduct.category;
+    return this.http.get<IProduct[]>(`${HTTP_API}/products/search?name=${search}&categories=${category}`)
     .pipe(
       debounceTime(500),
       tap(data => {

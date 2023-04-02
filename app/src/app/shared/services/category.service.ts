@@ -12,15 +12,15 @@ const HTTP_API = '/api';
 export class CategoryService {
   public categories$: BehaviorSubject<ICategory[]> = new BehaviorSubject(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+      this.init().subscribe()
+  }
 
-  public fetch(): Observable<ICategory[]> {
+  public init(): Observable<ICategory[]> {
     return this.http.get<ICategory[]>(`${HTTP_API}/categories/search`)
         .pipe(
-          tap((category: ICategory[]) => {
-            console.log(category);
-
-            this.categories$.next(category);
+          tap((categories: ICategory[]) => {
+            this.categories$.next(categories);
           })
         );
   }

@@ -1,8 +1,10 @@
 <!--NAVBAR-->
 <nav class="navbar">
   <div class="container-fluid">
-    <button (click)="animate()" class="btn btn-link menuIcon" type="button"><mat-icon>menu</mat-icon></button>
-      <img [routerLink]="['/']" src="assets/logo.png">
+    <button (click)="animate('active')" class="btn btn-link menuIcon sidebar-element" type="button">
+      <mat-icon class="sidebar-element">menu</mat-icon>
+    </button>
+    <img [routerLink]="['/']" src="assets/logo.png">
     <form class="d-flex">
       <span *ngIf="!userIsAuthenticated()">
         <button class="btn btn-outline-success btn-co" aria-label="Login icon" type="submit" [routerLink]="['auth/login']">Se connecter</button>
@@ -14,15 +16,15 @@
   </div>
 </nav>
 <!--SIDEBAR-->
-<div class="sidebar" id="notactive">
-  <button (click)="animate()" class="btn btn-link closeIcon" type="button"><mat-icon>close</mat-icon></button>
-  <ul class="list-group">
-    <li class="list-group-item">MENU</li>
-    <li class="list-group-item menu-link"><a [routerLink]="['/products']">Liste des produits</a></li>
-    <li class="list-group-item menu-link"><a [routerLink]="['/products']">Liste des produits</a></li>
-    <li class="list-group-item menu-link"><a [routerLink]="['/products']">Liste des produits</a></li>
-    <li class="list-group-item menu-link"><a [routerLink]="['/products']">Liste des produits</a></li>
-    <li class="list-group-item menu-link"><a [routerLink]="['/products']">Liste des produits</a></li>
+<div [@sidebar]="state" class="sidebar">
+  <button (click)="animate('notactive')" class="btn btn-link closeIcon sidebar-element" type="button">
+    <mat-icon class="sidebar-element">close</mat-icon>
+  </button>
+  <ul class="list-group sidebar-element">
+    <li class="list-group-item sidebar-element">MENU</li>
+    <li class="list-group-item menu-link sidebar-element" *ngFor="let category of categories$ | async">
+      <a [routerLink]="['/products']" [queryParams]="{category: category._id}">{{category.name}}</a>
+    </li>
   </ul>
 </div>
 <!--SEARCH INPUT-->

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { first } from 'rxjs/operators';
 import { IProduct } from 'src/app/logic/interfaces/product.interface';
 import { ProductService } from 'src/app/shared/services/product.service';
 

@@ -5,7 +5,7 @@ export interface IProduct {
   name: string,
   description: string,
   price: number,
-  categories: ICategory[],
+  category: ICategory,
   images?: string[],
   // @todo add current user as product owner
 }

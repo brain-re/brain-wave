@@ -1,43 +1,68 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { user } from 'src/app/logic/class/user.class';
-import { ProductService } from 'src/app/shared/services/product.service';
+import { CategoryService } from 'src/app/shared/services/category.service';
 import { UserService } from '../auth/service/user.service';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+import { ICategory } from 'src/app/logic/interfaces/category.interface';
+
+const sidebar = trigger('sidebar', [
+  state('notactive', style({
+    transform: 'translateX(-100%)'
+  })),
+  state('active', style({
+    transform: 'translateX(0)'
+  })),
+  transition('notactive <=> active', animate(100))
+]);
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
+  animations: [
+    sidebar
+  ]
 })
 
 export class NavbarComponent implements OnInit {
+  public state = 'notactive';
+  public inactiveElementCollapsibleSidebarClass = 'sidebar-element'; // An element with this class won't activate sidebar collapse
   public user$:BehaviorSubject<user> = this.userService.currentUser$;
+  public categories$: BehaviorSubject<ICategory[]> = this.categorieService.categories$;
+
+  @HostListener('window:click', ['$event'])
+  onMouseClick(event: PointerEvent) {
+    
+    let el = event.target as Element
+
+    // If the pointer event is not on a sidebar element,
+    // then user have clicked outside of sidebar.
+    if (!el.classList.contains(this.inactiveElementCollapsibleSidebarClass)) {
+      if (this.state === 'active') {
+        // So we want to collapse the sidebar if it is active.
+        this.state = 'notactive'
+      }
+    }
+  }
 
   constructor(
     private userService: UserService,
-    private productService: ProductService
+    private categorieService: CategoryService,
+    private dec: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.state = 'notactive'
+  }
 
-  public animate(){
-    //init background canvas
-    const canvas = document.createElement('div')
-    canvas.setAttribute('id', 'canvasBackground');
-    //get elements
-    const sidebar = document.querySelector('.sidebar')
-    const sidebarActive = document.getElementById('active')
-    const getCanvas = document.getElementById('canvasBackground')
-    //check the status of sidebar + animate
-    if (sidebarActive === null){
-      sidebar.setAttribute('id','active')
-      document.body.append(canvas)
-      const getCanvas = document.getElementById('canvasBackground')
-      getCanvas.style.cssText = 'position:absolute;width:100%;height:100%;top:0px;z-index:110;background-color:#000000;opacity:0.7;'
-    }else{
-      sidebar.setAttribute('id','notactive')
-      getCanvas.style.cssText = ''
-    }
+  public animate(force?: string)
+  {
+    if (force !== undefined) {
+      this.state = force;
+    } else {
+      this.state = this.state === 'notactive' ? 'active': 'notactive'    
+    }    
   }
 
   public userIsAuthenticated():boolean

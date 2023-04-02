@@ -5,6 +5,7 @@ import { ProductService } from 'src/app/shared/services/product.service';
 import { ProductSearchFormBuilder } from './form/product-search.form';
 import { ICategory } from 'src/app/logic/interfaces/category.interface';
 import { CategoryService } from "../../../../shared/services/category.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-product-search',
@@ -13,12 +14,13 @@ import { CategoryService } from "../../../../shared/services/category.service";
 })
 export class ProductSearchComponent implements OnInit {
   public productSearchForm: FormGroup = new FormGroup({});
-  public categories$: Observable<ICategory[]> = this.categoryService.fetch();
+  public categories$: Observable<ICategory[]> = this.categoryService.categories$;
 
   constructor(
     private productSearchFormBuilder: ProductSearchFormBuilder,
     private productService: ProductService,
     private categoryService: CategoryService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -26,7 +28,12 @@ export class ProductSearchComponent implements OnInit {
   }
 
   initForm() {
-    this.productSearchForm = this.productSearchFormBuilder.withSubmit((_form: FormGroup) => {this.submit(_form)}).build();
+    this.route.queryParamMap.subscribe((params) => {
+      this.productSearchForm = this.productSearchFormBuilder.withSubmit((_form: FormGroup) => {this.submit(_form)}).build({
+        category: params.get('category')
+      });
+      this.submit(this.productSearchForm);
+    })
   }
 
   get category(): AbstractControl|null {

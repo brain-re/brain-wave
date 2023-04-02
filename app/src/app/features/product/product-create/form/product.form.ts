@@ -13,7 +13,7 @@ export class ProductFormBuilder extends BaseFormBuilder
     name: '',
     description: "",
     price: 0,
-    categories: null
+    category: null
   }): FormGroup
   {
     return super.build({
@@ -31,7 +31,7 @@ export class ProductFormBuilder extends BaseFormBuilder
           Validators.required
         ]
       ],
-      categories: [data.categories, []],
+      category: [data.category, []],
       price: [
         data.price,
         [
@@ -62,7 +62,7 @@ export class ProductFormBuilder extends BaseFormBuilder
           fr: "La description est requise"
         }
       },
-      categories: {},
+      category: {},
       price: {
         min: {
           fr: "La valeur doit être positive"

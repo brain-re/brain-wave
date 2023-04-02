@@ -58,8 +58,10 @@ nav{
   z-index: 120;
   .closeIcon{
     position: absolute;
-    left: 305px;
+    left: 200px;
+    top: 8px;
     color: white;
+    z-index: 200;
   }
   .list-group{
     border-radius: 0px;
@@ -88,12 +90,4 @@ nav{
       }
     }
   }
-}
-#active{
-  left: 0px;
-  -webkit-transition:0.4s;
-}
-#notactive{
-  left: -350px;
-  -webkit-transition:0.4s;
 }

@@ -12,7 +12,7 @@ import { ProductFormBuilder } from './form/product.form';
 })
 export class ProductCreateComponent implements OnInit {
   public form: FormGroup = new FormGroup({});
-  public categories$: Observable<ICategory[]> = this.categorieService.fetch();
+  public categories$: Observable<ICategory[]> = this.categorieService.categories$;
 
   constructor(
     private productFormBuilder: ProductFormBuilder,

@@ -57,4 +57,10 @@ export class AuthService {
       map(() => this.token$.value) // Return the token
     );
   }
+
+  public logout(): void
+  {
+    localStorage.setItem(JWT_LOCALE_KEY, null);
+    this.token$.next(new jwtToken());
+  }
 }

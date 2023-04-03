@@ -26,8 +26,8 @@ function request_construct(req){
       const regex = new RegExp(req.query.name, 'i')
       requete = {...requete, name: {$regex: regex}}
     }
-    if (req.query.categories != undefined){
-      requete = {...requete, category: req.query.categories }
+    if (req.query.category != undefined){
+      requete = {...requete, category: req.query.category }
     }
     if (req.query.entreprise != undefined){
       requete = {...requete, entreprise: req.query.entreprise }
@@ -35,7 +35,7 @@ function request_construct(req){
     return requete
 }
   
-function run_search(requete,req){
+async function run_search(requete,req,res){
   var sort = {};
   if (req.query.prix == "-1" || req.query.prix == "1"){
     var sort = {...sort, price: req.query.prix}
@@ -46,7 +46,14 @@ function run_search(requete,req){
   if (req.query.dislike == "-1" || req.query.dislike == "1"){
       var sort = {...sort, count_disliked: req.query.dislike}
   }
-  return Products.find({$and: [requete]}).limit(Number(req.query.number_product)).sort().populate("categories").populate("entreprises")
+  try {
+    const products = await Products.find({$and: [requete]}).limit(Number(req.query.number_product)).sort().populate("category").populate("entreprises").populate("users")
+    return products
+  } catch (error){
+    res.status(400).send("[!] Erreur cotée client");
+    res.end()
+  }
+  
 }
 
 module.exports = router;

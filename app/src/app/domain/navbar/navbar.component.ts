@@ -1,10 +1,12 @@
-import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { user } from 'src/app/logic/class/user.class';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { UserService } from '../auth/service/user.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { ICategory } from 'src/app/logic/interfaces/category.interface';
+import { AuthService } from '../auth/service/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const sidebar = trigger('sidebar', [
   state('notactive', style({
@@ -34,7 +36,7 @@ export class NavbarComponent implements OnInit {
   @HostListener('window:click', ['$event'])
   onMouseClick(event: PointerEvent) {
     
-    let el = event.target as Element
+    let el = event.target as Element;
 
     // If the pointer event is not on a sidebar element,
     // then user have clicked outside of sidebar.
@@ -49,7 +51,9 @@ export class NavbarComponent implements OnInit {
   constructor(
     private userService: UserService,
     private categorieService: CategoryService,
-    private dec: ChangeDetectorRef
+    private authService: AuthService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -68,5 +72,13 @@ export class NavbarComponent implements OnInit {
   public userIsAuthenticated():boolean
   {
     return null !== this.user$.value;
+  }
+
+  public logout(): void
+  {
+    this.authService.logout();
+    this.router.navigate(['..'], { relativeTo: this.activatedRoute }).then(() => {
+      window.location.reload()
+    })
   }
 }

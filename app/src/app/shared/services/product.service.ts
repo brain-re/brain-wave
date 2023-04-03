@@ -32,7 +32,7 @@ export class ProductService {
     }
 
     if (searchProduct.category !== null) {
-      request += `categories=${searchProduct.category}&`
+      request += `category=${searchProduct.category}&`
     }
         
     return this.http.get<IProduct[]>(request)

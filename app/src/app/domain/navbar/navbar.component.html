@@ -10,7 +10,7 @@
         <button class="btn btn-outline-success btn-co" aria-label="Login icon" type="submit" [routerLink]="['auth/login']">Se connecter</button>
       </span>
       <span *ngIf="userIsAuthenticated()">
-        <button class="btn btn-outline-success btn-co" aria-label="Account icon" type="submit">Déconnexion</button>
+        <button (click)="logout()" class="btn btn-outline-success btn-co" aria-label="Account icon" type="submit">Déconnexion</button>
       </span>
     </form>
   </div>

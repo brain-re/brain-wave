@@ -1,8 +1,9 @@
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from "src/app/domain/auth/service/auth.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
+import { tap } from "rxjs/operators";
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
   constructor(
     protected fb: FormBuilder,
     protected authService: AuthService,
-    protected router: Router
+    protected router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -41,13 +43,19 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     this.error = null;
     if (this.form.valid) {
-      this.authService.login(this.form.value).subscribe(
-        () => this.router.navigate(['/']),
-        (response: HttpErrorResponse) => {
+      this.authService.login(this.form.value).pipe().subscribe({
+       next: () => {
+        this.router
+          .navigate(['/'])
+          .then(() => {
+            window.location.reload()
+          })
+       },
+       error: (response: HttpErrorResponse) => {
           let err:string = response.error;
           this.error = err ? err : "Une erreur est survenue, veuillez réésayer...";
         }
-      );
+      });
     } else {
       console.log('Some fields are missing !');
     }

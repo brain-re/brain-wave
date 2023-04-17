@@ -4,13 +4,17 @@
     <button (click)="animate('active')" class="btn btn-link menuIcon sidebar-element" type="button">
       <mat-icon class="sidebar-element">menu</mat-icon>
     </button>
-    <img [routerLink]="['/']" src="assets/logo.png">
     <form class="d-flex">
       <span *ngIf="!userIsAuthenticated()">
         <button class="btn btn-outline-success btn-co" aria-label="Login icon" type="submit" [routerLink]="['auth/login']">Se connecter</button>
       </span>
       <span *ngIf="userIsAuthenticated()">
-        <button (click)="logout()" class="btn btn-outline-success btn-co" aria-label="Account icon" type="submit">Déconnexion</button>
+        <button class="btn btn-co">
+          <mat-icon>account_box</mat-icon>
+        </button>
+        <button (click)="logout()" class="btn btn-co" aria-label="Account icon" type="submit">
+          <mat-icon>logout</mat-icon>
+        </button>
       </span>
     </form>
   </div>
@@ -21,17 +25,11 @@
     <mat-icon class="sidebar-element">close</mat-icon>
   </button>
   <ul class="list-group sidebar-element">
-    <li class="list-group-item sidebar-element">MENU</li>
-    <li class="list-group-item menu-link sidebar-element" *ngFor="let category of categories$ | async">
-      <a [routerLink]="['/products']" [queryParams]="{category: category._id}">{{category.name}}</a>
+    <li class="list-group-item sidebar-element" [routerLink]="['/home']">
+      <span style="cursor:pointer">MENU</span>
     </li>
+    <a [routerLink]="['/products']" [queryParams]="{category: category._id}" class="list-group-item menu-link sidebar-element" *ngFor="let category of categories$ | async" (click)="onClickCategory()">
+        {{category.name}}
+    </a>
   </ul>
-</div>
-<!--SEARCH INPUT-->
-<div class="container-fluid search">
-  <form class="d-flex input-form">
-    <app-product-search></app-product-search>
-    <button class="btn btn-outline-success btn-search" type="submit"></button>
-    <mat-icon>search</mat-icon>
-  </form>
 </div>

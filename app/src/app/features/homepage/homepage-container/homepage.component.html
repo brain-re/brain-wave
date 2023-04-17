@@ -1,7 +1,4 @@
-<a [routerLink]="['/products']">Liste des produits</a>
-<span *ngIf="user">{{user}}</span>
-
-<div class="d-grid">
-    <app-product-list [title]="last_new_title"></app-product-list>
-    <app-product-list [title]="most_seen"></app-product-list>
+  
+<div class="d-flex">
+    <app-product-list></app-product-list>
 </div>

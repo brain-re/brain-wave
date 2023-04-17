@@ -1,20 +1,25 @@
-<form [formGroup]="productSearchForm" class="mt-20 form-big" [style]="search.pristine?'':'display: flex;'">
-  <mat-form-field appearance="fill">
-    <mat-label>Select</mat-label>
+<form [formGroup]="productSearchForm" class="d-flex input-form tiny-form" [style]="search.pristine?'':'display: flex;'">
+  <mat-form-field class="col-1" appearance="outline">
+    <mat-label>Catégorie</mat-label>
     <mat-select formControlName="category">
-      <mat-option [value]="0">
-        Toutes nos catégories
-      </mat-option>
+      <mat-option [value]="0"></mat-option>
       <mat-option *ngFor="let categorie of categories$ | async" [value]="categorie._id">
         {{categorie.name}}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field *ngIf="search" appearance="outline" class="field-big">
-    <mat-label>Search something cool</mat-label>
-    <input matInput formControlName="search" type="text" (change)="onSearchChange($event)" (click)="onClick($event)"/>
+  <mat-form-field *ngIf="search" appearance="outline" class="col-11">
+    <mat-label>Rechercher quelque chose</mat-label>
+    <input matInput formControlName="search" type="text"/>
+    <button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="clear($event)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</form>
+<div class="row">
+  <div class="col-11 offset-1">
     <div *ngFor="let err of search?.errors | keyvalue">
       <mat-error *ngIf="err.value | IsString">{{ err.value }}</mat-error>
     </div>
-  </mat-form-field>
-</form>
+  </div>
+</div>

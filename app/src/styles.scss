@@ -40,7 +40,7 @@ a {
   --font-family: "Roboto", sans-serif;
   --primary: #546de5;
   --secondary: #778beb;
-  --accent: #e5546d;
+  --accent: #2c49da;
   --lightgray: #ddd;
   --text-regular: #444;
 }
@@ -256,7 +256,7 @@ input.ng-invalid.ng-touched {
 }
 
 input.ng-valid.ng-touched {
-  border: 1px solid lightgreen;
+  border: 1px solid #5059AF;
   transition: border 0.4s;
 }
 
@@ -268,4 +268,12 @@ input.ng-valid.ng-touched {
 
 .d2 {
   border: 1px solid green;
+}
+
+.mat-form-field-wrapper {
+  padding-bottom: 0
+}
+
+input.ng-valid.ng-touched {
+  border: none
 }

@@ -44,20 +44,8 @@ export class ProductSearchComponent implements OnInit {
     return this.productSearchForm.get('search');
   }
 
-  onSearchChange(event: Event) {
-    let target = (event.target as HTMLInputElement);
-
-    // Remove ugly style both are really ugly !
-    target.classList.remove('ng-valid'); // Ignore ng-valid
-    target.classList.remove('ng-invalid'); // Ignore ng-invalid
-  }
-
-  onClick(event: Event) {
-    let target = (event.target as HTMLInputElement);
-
-    // Remove ugly style both are really ugly !
-    target.classList.remove('ng-valid'); // Ignore ng-valid
-    target.classList.remove('ng-invalid'); // Ignore ng-invalid
+  clear() {
+    this.productSearchForm.get('search').setValue('');
   }
 
   submit(form: FormGroup): void

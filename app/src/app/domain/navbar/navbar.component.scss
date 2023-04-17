@@ -6,13 +6,17 @@ $w : white;
 nav{
   background-color: $b;
     .btn-co{
-      color: $b;
-      background-color: $w;
-      border-color: $w;
+      color: $w;
+      border-color: $b;
+      background-color: $b;
     }
     .btn-co:hover{
-      color: $w;
-      background-color: $b;
+      color: $b;
+      background-color: $w;
+      mat-icon{
+        color: $b;
+        cursor: pointer;
+      }
     }
     mat-icon{
       color: $w;

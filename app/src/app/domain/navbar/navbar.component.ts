@@ -60,6 +60,10 @@ export class NavbarComponent implements OnInit {
     this.state = 'notactive'
   }
 
+  public onClickCategory() {
+    this.state = 'notactive'
+  }
+
   public animate(force?: string)
   {
     if (force !== undefined) {

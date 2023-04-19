@@ -12,9 +12,7 @@ const HTTP_API = '/api';
 export class CategoryService {
   public categories$: BehaviorSubject<ICategory[]> = new BehaviorSubject(null);
 
-  constructor(private http: HttpClient) {
-      this.init().subscribe()
-  }
+  constructor(private http: HttpClient) {}
 
   public init(): Observable<ICategory[]> {
     return this.http.get<ICategory[]>(`${HTTP_API}/categories/search`)
@@ -23,5 +21,10 @@ export class CategoryService {
             this.categories$.next(categories);
           })
         );
+  }
+
+  public create(category: string): void
+  {
+    this.http.post(`${HTTP_API}/categories/create`, {name: category});
   }
 }

@@ -31,9 +31,9 @@ const rights = {
   "/api/roles/create": [[role_administrator]],
   "/api/roles/search": [[role_administrator],[role_creator]],
 
-  "/api/products/like": [[role_administrator],[role_creator],[role_user]],
-  "/api/products/create": [[role_administrator],[role_creator]],
-  "/api/products/delete": [[role_administrator],[role_creator]],
+  "/api/article/like": [[role_administrator],[role_creator],[role_user]],
+  "/api/article/create": [[role_administrator],[role_creator]],
+  "/api/article/delete": [[role_administrator],[role_creator]],
 
   "/api/users/search":[[role_administrator]],
   "/api/users/create_power_users":[[role_administrator]],
@@ -43,7 +43,6 @@ const rights = {
 
   "/api/token/refresh_token":[[role_administrator],[role_creator],[role_user]],
 
-  "/api/entreprises/create": [[role_administrator]]
 }
 
 const check_user = function check_token(req, res, next){
@@ -99,18 +98,18 @@ const check_user = function check_token(req, res, next){
   }
 }
 
-//Products route
-const create_products = require('./principale/products/create_products')
-router.use('/api/products/create', check_user, create_products)
+//article route
+const create_article = require('./principale/article/create_article')
+router.use('/api/article/create', check_user, create_article)
 
-const like_products = require('./principale/products/like_dislike_products')
-router.use('/api/products/like', check_user, like_products)
+const like_article = require('./principale/article/like_dislike_article')
+router.use('/api/article/like', check_user, like_article)
 
-const search_products = require('./principale/products/search_products')
-router.use('/api/products/search', search_products)
+const search_article = require('./principale/article/search_article')
+router.use('/api/article/search', search_article)
 
-const delete_products = require('./principale/products/detete_products')
-router.use('/api/products/delete', check_user, delete_products)
+const delete_article = require('./principale/article/detete_article')
+router.use('/api/article/delete', check_user, delete_article)
 
 //Categories route-----------------------------------------------------------------------------------------------------------
 const create_categories = require('./principale/categories/create_categories')
@@ -147,11 +146,5 @@ router.use("/api/is_granted", global_rights)
 
 const specific_rights = require('./client_check_rights/specific_rights.js')
 router.use("/api/specific_granted/delete", specific_rights)
-
-const entreprises_create = require('./principale/entreprises/create_entreprises.js')
-router.use("/api/entreprises/create", check_user, entreprises_create)
-
-const entreprises_propositions = require('./principale/entreprises/propose_entreprises')
-router.use("/api/entreprises/proposition", entreprises_propositions)
 
 module.exports = router;

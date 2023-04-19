@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Products = require("../../../models/products.model");
+const article = require("../../../models/article.model");
 const jwt = require('jsonwebtoken');
 var funct_decode_bearer = require('../../utility function/decode_jwt').decode_bearer;
 
@@ -7,7 +7,7 @@ var funct_decode_bearer = require('../../utility function/decode_jwt').decode_be
 async function IDvalideur(test_longeur_input,res){
     console.log(test_longeur_input.length)
     if (test_longeur_input.length != 24){
-      res.send(403,"[!] invalid input for a product ")
+      res.send(403,"[!] invalid input for a article ")
       res.end()
     }
   }
@@ -26,7 +26,7 @@ router.get("/", (req, res) => {
       console.log("[+] Session utilisateur", id_decoded)
       id_decoded = id_decoded.replace(/['"]+/g, '');
       var p1 = new Promise(function(resolve,reject){
-        var check_user0 = Products.find({creator: id_decoded, _id: req.query.delete })
+        var check_user0 = article.find({creator: id_decoded, _id: req.query.delete })
         check_user0.exec(function (err) {
           if (err) {
               return;
@@ -42,12 +42,12 @@ router.get("/", (req, res) => {
         else{
           console.log("Suppression du produit en cours")
           var p2 = new Promise(function(resolve,reject){
-            const deleted_products = Products.deleteOne({creator: id_decoded, _id: req.query.delete })
-            deleted_products.exec(function (err) {
+            const deleted_article = article.deleteOne({creator: id_decoded, _id: req.query.delete })
+            deleted_article.exec(function (err) {
               if (err) {
                   return;
               }
-              resolve(deleted_products)
+              resolve(deleted_article)
             });
           })
           p2.then((test) => {

@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import {MatChipsModule} from '@angular/material/chips';
 import { MatSelectModule } from '@angular/material/select'
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 const MATERIALS = [
     MatInputModule
@@ -19,6 +20,7 @@ const MATERIALS = [
   , MatGridListModule
   , MatChipsModule
   , MatSelectModule
+  , MatAutocompleteModule
 ];
 
 @NgModule({

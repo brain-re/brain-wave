@@ -7,15 +7,15 @@ const administrator = '62463c087ad782107e12ff7a'
 const user = '6288df5bfb6f79012342f80a'
 const creator = '6288dfd888de3002084436fb'
 
-const visitor_rights = ["/api/users/login","/api/products/search","/api/categories/search","/api/categories"]
+const visitor_rights = ["/api/users/login","/api/article/search","/api/categories/search","/api/categories"]
 
 const rights = {
     "/api/roles": [[administrator]],
     "/api/roles/create": [[administrator]],
   
-    "/api/products/like": [[administrator],[creator],[user]],
-    "/api/products/create": [[administrator],[creator]],
-    "/api/products/delete": [[administrator],[creator]],
+    "/api/article/like": [[administrator],[creator],[user]],
+    "/api/article/create": [[administrator],[creator]],
+    "/api/article/delete": [[administrator],[creator]],
   
     "/api/users/search":[[administrator]],
     "/api/users/create":[[administrator]],

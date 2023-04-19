@@ -1,7 +1,7 @@
 const mongodb = require('../helpers/mongo-db');
 const usersF = require("./users");
 const rolesF = require("./roles");
-const productsF = require("./products");
+const articleF = require("./article");
 const categoriesF = require("./categories");
 
 
@@ -24,10 +24,10 @@ mongodb.connect()
         console.log('Categories done ✔️');
         return res;
     })
-    .then(() => {console.log('Loading products... 🏁')})
-    .then(() => productsF())
+    .then(() => {console.log('Loading article... 🏁')})
+    .then(() => articleF())
     .then((res) => {
-        console.log('Products done ✔️');
+        console.log('article done ✔️');
         return res;
     })
     .then(() => mongodb.close())

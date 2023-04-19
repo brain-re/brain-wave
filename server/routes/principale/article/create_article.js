@@ -1,11 +1,11 @@
 const router = require("express").Router();
-const Products = require("../../../models/products.model");
+const article = require("../../../models/article.model");
 const jwt = require('jsonwebtoken');
 
 router.post("/", (req, res) => {
     //By default array have a default value of empty array so they bypass the required in shema. So i need to implecity set "undefined" to array categorie
     if (req.body.categories == undefined) {
-      res.send(400, '[!] all information are not send correctly to the server for the creation of a product, this is a problem with categories')
+      res.send(400, '[!] all information are not send correctly to the server for the creation of a article, this is a problem with categories')
       res.end()
     } else {
       //Dans le bloc de code du dessous on récupérer l'user qui crée le produit
@@ -22,7 +22,7 @@ router.post("/", (req, res) => {
         id_decoded = id_decoded.replace(/['"]+/g, "");
         
         //Dans ce bloc de code on crée le produit
-        const create_products = new Products ({
+        const create_article = new article ({
           name: req.body['name'].trim(),
           description: req.body['description'].trim(),
           price: req.body['price'].trim(),
@@ -30,13 +30,13 @@ router.post("/", (req, res) => {
           creator: id_decoded.toString().trim(),
           images: req.body['images'].trim(),
           });
-          create_products.save(function(err){
+          create_article.save(function(err){
             if (err) {
-              res.send(400, '[!] all information are not send correctly to the server for the creation of a product, or this name already exist')
+              res.send(400, '[!] all information are not send correctly to the server for the creation of a article, or this name already exist')
               res.end()
             }
             else{
-              res.json("[+] Products created")
+              res.json("[+] article created")
               res.end()
             }
           })

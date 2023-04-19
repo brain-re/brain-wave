@@ -1,7 +1,7 @@
 const { faker } = require('@faker-js/faker');
 const usersModel = require("../models/users.model");
 const categoriesModel = require("../models/categories.model");
-const productsModel = require("../models/products.model");
+const articlesModel = require("../models/article.model");
 
 module.exports = () => 
     Promise.all([
@@ -10,9 +10,9 @@ module.exports = () =>
     ]).then((data) => {
         const users = data[0];
         const categories = data[1];
-        let products = [];
+        let articles = [];
         for(var i = 0; i < 100; i++) {
-            products.push(new productsModel({
+            articles.push(new articlesModel({
                 name: faker.helpers.unique(() => faker.commerce.productName()),
                 description: faker.commerce.productDescription(),
                 price: faker.commerce.price(),
@@ -25,12 +25,12 @@ module.exports = () =>
             }));
         }
         
-        return products;
+        return articles;
     })
-    .then((products) => productsModel.bulkSave(products))
+    .then((articles) => articlesModel.bulkSave(articles))
     .catch((err) => {
         if (err.code == 11000) {
-            console.log("🚩 Products insertion was stopped as database contains dupplicate keys");
+            console.log("🚩 Articles insertion was stopped as database contains dupplicate keys");
         } else {
             throw err;
         }

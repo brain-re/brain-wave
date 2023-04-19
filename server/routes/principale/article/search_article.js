@@ -1,21 +1,21 @@
 const router = require("express").Router();
-const Products = require("../../../models/products.model");
+const articles = require("../../../models/article.model");
 
 router.get("/",  (req, res) => {
   new Promise((resolve, reject) => {
     if (req.query._id != undefined) {
-      Products.findById(req.query._id)
+      articles.findById(req.query._id)
               .exec()
-              .then((product) => resolve([product]))
-              .catch((err) => reject(`Can't find by product id ${err}`));
+              .then((article) => resolve([article]))
+              .catch((err) => reject(`Can't find by article id ${err}`));
     } else {
       requete = request_construct(req);
       run_search(requete, req, res)
-        .then((products) => resolve(products))
+        .then((articles) => resolve(articles))
         .catch((err) => reject(`Can't find using following criteria ${JSON.stringify(requete)}. Resulting in error ${err}`));
     }
-  }).then((products) => {
-    res.json(products);
+  }).then((article) => {
+    res.json(article);
     res.end();
   });
 })
@@ -47,8 +47,8 @@ async function run_search(requete,req,res){
       var sort = {...sort, count_disliked: req.query.dislike}
   }
   try {
-    const products = await Products.find({$and: [requete]}).limit(Number(req.query.number_product)).sort().populate("category").populate("entreprises").populate("users")
-    return products
+    const article = await articles.find({$and: [requete]}).limit(Number(req.query.number_article)).sort().populate("category").populate("users")
+    return article
   } catch (error){
     res.status(400).send("[!] Erreur cotée client");
     res.end()

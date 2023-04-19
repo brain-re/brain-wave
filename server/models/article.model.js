@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const ProductsSchema = new Schema({
+const articleSchema = new Schema({
     name : { type : String, unique: true, required : [true, 'Un produit à besoin d\'un nom']},
     description : { type : String, required : [true, 'Un produit à besoin d\'une description']},
     price : { type : Number, required : [true, 'Un produit à besoin d\'un prix']}, 
@@ -16,7 +16,7 @@ const ProductsSchema = new Schema({
     entreprise : [{ type : Schema.Types.ObjectId, ref: 'entreprises'}]
   });
 
-const Products = mongoose.model('Products', ProductsSchema );
+const article = mongoose.model('article', articleSchema );
 
-module.exports = Products;
+module.exports = article;
 

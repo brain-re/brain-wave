@@ -1,19 +1,19 @@
 import { Injectable } from "@angular/core";
 import { FormGroup, Validators } from "@angular/forms";
 
-import { ISearchProduct } from "./product-search.type";
+import { ISearchArticle } from "./article-search.type";
 import { BaseFormBuilder } from "src/app/shared/form/base-form.builder";
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductSearchFormBuilder extends BaseFormBuilder
+export class ArticleSearchFormBuilder extends BaseFormBuilder
 {
   constructor() {
     super();
   }
 
-  public build(data: ISearchProduct = {search: '', category: ''}): FormGroup
+  public build(data: ISearchArticle = {search: '', category: ''}): FormGroup
   {
     return super.build({
       search: [

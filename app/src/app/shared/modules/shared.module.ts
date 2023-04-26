@@ -2,17 +2,17 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ProductItemComponent } from 'src/app/features/product/product-container/product-item/product-item.component';
-import { ProductListComponent } from 'src/app/features/product/product-container/product-list/product-list.component';
-import { ProductSearchComponent } from 'src/app/features/product/product-container/product-search/product-search.component';
+import { ArticleItemComponent } from 'src/app/features/article/article-container/article-item/article-item.component';
+import { ArticleListComponent } from 'src/app/features/article/article-container/article-list/article-list.component';
+import { ArticleSearchComponent } from 'src/app/features/article/article-container/article-search/article-search.component';
 import { Pipes } from '../pipe/pipes';
 import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
-    ProductListComponent,
-    ProductItemComponent,
-    ProductSearchComponent
+    ArticleListComponent,
+    ArticleItemComponent,
+    ArticleSearchComponent
   ],
   imports: [
       CommonModule
@@ -28,9 +28,9 @@ import { MaterialModule } from './material.module';
     , MaterialModule
     , ReactiveFormsModule
     , Pipes
-    , ProductListComponent
-    , ProductItemComponent
-    , ProductSearchComponent
+    , ArticleListComponent
+    , ArticleItemComponent
+    , ArticleSearchComponent
   ]
 })
 export class SharedModule { }

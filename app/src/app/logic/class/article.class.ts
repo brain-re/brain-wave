@@ -1,13 +1,12 @@
 import { ICategory } from "../interfaces/category.interface";
-import { IProduct } from "../interfaces/product.interface";
-import { IUser } from "../interfaces/user.interface";
+import { IArticle } from "../interfaces/article.interface";
 
-export class product implements IProduct {
+export class article implements IArticle {
   constructor (
     public name: string,
     public description: string,
     public price: number,
-    public categories: ICategory[],
+    public category: ICategory,
     public images?: string[],
     public _id?: string,
   ) {}

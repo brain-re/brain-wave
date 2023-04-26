@@ -1,0 +1,12 @@
+<div *ngIf="!isLoading">
+  {{ article.name }}
+  <br>
+  {{ article.description }}
+  <br>
+  {{ article.image }}
+  Prix: {{ article.price }}
+  <br>
+
+  Like: {{article.liked.length}}<br>
+  Dislike: {{article.disliked.length}}
+</div>

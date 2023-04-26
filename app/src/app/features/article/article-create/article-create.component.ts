@@ -3,25 +3,25 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import { Observable } from "rxjs";
 import { ICategory } from 'src/app/logic/interfaces/category.interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
-import { ProductService } from 'src/app/shared/services/product.service';
-import { ProductFormBuilder } from './form/product.form';
+import { ArticleService } from 'src/app/shared/services/article.service';
+import { ArticleFormBuilder } from './form/article.form';
 
 @Component({
-  selector: 'app-product-create',
-  templateUrl: './product-create.component.html'
+  selector: 'app-article-create',
+  templateUrl: './article-create.component.html'
 })
-export class ProductCreateComponent implements OnInit {
+export class ArticleCreateComponent implements OnInit {
   public form: FormGroup = new FormGroup({});
   public categories$: Observable<ICategory[]> = this.categorieService.categories$;
 
   constructor(
-    private productFormBuilder: ProductFormBuilder,
-    private productService: ProductService,
+    private articleFormBuilder: ArticleFormBuilder,
+    private articleService: ArticleService,
     private categorieService: CategoryService
   ) {}
 
   ngOnInit(): void {
-    this.form = this.productFormBuilder.build();
+    this.form = this.articleFormBuilder.build();
   }
 
   get name(): AbstractControl|null {
@@ -46,6 +46,6 @@ export class ProductCreateComponent implements OnInit {
       return null;
     }
 
-    this.productService.create(form.value);
+    this.articleService.create(form.value);
   }
 }

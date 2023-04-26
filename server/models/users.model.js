@@ -9,8 +9,8 @@ const userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   roles: [{ type: Schema.Types.ObjectId, ref: 'roles', required : [true, 'Ceci n\'est pas un role valide']}],
-  product_liked: [{ type: Schema.Types.ObjectId, ref: 'products'}],
-  product_disliked: [{ type: Schema.Types.ObjectId, ref: 'products'}],
+  article_liked: [{ type: Schema.Types.ObjectId, ref: 'articles'}],
+  article_disliked: [{ type: Schema.Types.ObjectId, ref: 'articles'}],
   blocked: Boolean
 });
 

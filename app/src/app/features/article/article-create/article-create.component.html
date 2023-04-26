@@ -20,15 +20,19 @@
     </mat-form-field>
   </div>
   <div>
-    <mat-form-field *ngIf="categories" appearance="fill">
-      <mat-label>Select</mat-label>
-      <mat-select formControlName="categories" multiple>
-        <div *ngFor="let categorie of categories$ | async">
-          <mat-option [value]="categorie._id">
-            {{categorie.name}}
-          </mat-option>
-        </div>
-      </mat-select>
+    <mat-form-field *ngIf="category" appearance="outline">
+      <mat-label>Category</mat-label>
+      <input type="text"
+             placeholder="Category"
+             aria-label="Category"
+             matInput
+             [formControl]="category"
+             [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option [id]="category._id" *ngFor="let category of filteredCategories | async" [value]="category.name" (click)="onSelectCategory($event)">
+          {{ category.name }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
   </div>
   <div>

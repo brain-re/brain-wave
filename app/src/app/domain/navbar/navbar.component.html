@@ -28,7 +28,7 @@
     <li class="list-group-item sidebar-element" [routerLink]="['/home']">
       <span style="cursor:pointer">MENU</span>
     </li>
-    <a [routerLink]="['/products']" [queryParams]="{category: category._id}" class="list-group-item menu-link sidebar-element" *ngFor="let category of categories$ | async" (click)="onClickCategory()">
+    <a [routerLink]="['/articles']" [queryParams]="{category: category._id}" class="list-group-item menu-link sidebar-element" *ngFor="let category of categories$ | async" (click)="onClickCategory()">
         {{category.name}}
     </a>
   </ul>

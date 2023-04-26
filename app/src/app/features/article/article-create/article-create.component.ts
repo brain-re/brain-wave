@@ -3,25 +3,25 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import { BehaviorSubject, Observable } from "rxjs";
 import { ICategory } from 'src/app/logic/interfaces/category.interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
-import { ProductService } from 'src/app/shared/services/product.service';
-import { ProductFormBuilder } from './form/product.form';
+import { ArticleService } from 'src/app/shared/services/article.service';
+import { ArticleFormBuilder } from './form/article.form';
+import { IArticle } from 'src/app/logic/interfaces/article.interface';
 import { map, startWith, tap } from 'rxjs/operators';
-import { IProduct } from 'src/app/logic/interfaces/product.interface';
 import { category } from 'src/app/logic/class/category.class';
 
 @Component({
-  selector: 'app-product-create',
-  templateUrl: './product-create.component.html'
+  selector: 'app-article-create',
+  templateUrl: './article-create.component.html'
 })
-export class ProductCreateComponent implements OnInit {
+export class ArticleCreateComponent implements OnInit {
   public form: FormGroup = new FormGroup({});
   public categories$: BehaviorSubject<ICategory[]> = this.categorieService.categories$;
   public filteredCategories: Observable<ICategory[]>;
   public selectedCategory?: ICategory = null;
 
   constructor(
-    private productFormBuilder: ProductFormBuilder,
-    private productService: ProductService,
+    private articleFormBuilder: ArticleFormBuilder,
+    private articleService: ArticleService,
     private categorieService: CategoryService
   ) {}
 
@@ -33,7 +33,7 @@ export class ProductCreateComponent implements OnInit {
         map(value => this._filter(value || '')),
       ))
     ).subscribe();
-    this.form = this.productFormBuilder.build();    
+    this.form = this.articleFormBuilder.build();    
   }
 
   private _filter(value: string): ICategory[] {
@@ -71,7 +71,7 @@ export class ProductCreateComponent implements OnInit {
       return null;
     }
 
-    let product: IProduct = form.value;    
+    let product: IArticle = form.value;    
 
     if (!this.selectedCategory) {
       // Create new category object
@@ -81,6 +81,6 @@ export class ProductCreateComponent implements OnInit {
       product = {...product, category: this.selectedCategory}
     }
     
-    this.productService.create(product);
+    this.articleService.create(product);
   }
 }

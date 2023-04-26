@@ -1,0 +1,16 @@
+<mat-card >
+  <mat-card-header>
+    <mat-card-title style="float: left;">{{article.name}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{article.description}}</p>
+    <br>
+    <span *ngIf="article.category !== undefined">
+      #{{article.category}}
+    </span>
+    <span *ngIf="article.category === undefined">
+      # No category
+    </span>
+    
+  </mat-card-content>
+</mat-card>

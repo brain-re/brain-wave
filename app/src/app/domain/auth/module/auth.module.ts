@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../../shared/modules/shared.module';
 import { LoginComponent } from '../component/login/login.component';
 
-const APP_PRODUCT_ROUTES: Routes = [
+const APP_ARTICLE_ROUTES: Routes = [
   {
     path: 'login',
     component: LoginComponent,
@@ -13,6 +13,6 @@ const APP_PRODUCT_ROUTES: Routes = [
 
 @NgModule({
   declarations: [LoginComponent],
-  imports: [SharedModule, RouterModule.forChild(APP_PRODUCT_ROUTES)],
+  imports: [SharedModule, RouterModule.forChild(APP_ARTICLE_ROUTES)],
 })
 export class AuthModule {}

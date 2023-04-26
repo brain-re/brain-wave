@@ -1,11 +1,11 @@
 import { ICategory } from "./category.interface";
 
-export interface IProduct {
+export interface IArticle {
   _id?: string,
   name: string,
   description: string,
   price: number,
   category: ICategory,
   images?: string[],
-  // @todo add current user as product owner
+  // @todo add current user as article owner
 }

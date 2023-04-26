@@ -1,24 +1,24 @@
 import { Observable } from "rxjs";
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { ProductService } from 'src/app/shared/services/product.service';
-import { ProductSearchFormBuilder } from './form/product-search.form';
+import { ArticleService } from 'src/app/shared/services/article.service';
+import { ArticleSearchFormBuilder } from './form/article-search.form';
 import { ICategory } from 'src/app/logic/interfaces/category.interface';
 import { CategoryService } from "../../../../shared/services/category.service";
 import { ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-product-search',
-  templateUrl: './product-search.component.html',
-  styleUrls: ['./product-search.component.scss']
+  selector: 'app-article-search',
+  templateUrl: './article-search.component.html',
+  styleUrls: ['./article-search.component.scss']
 })
-export class ProductSearchComponent implements OnInit {
-  public productSearchForm: FormGroup = new FormGroup({});
+export class ArticleSearchComponent implements OnInit {
+  public articleSearchForm: FormGroup = new FormGroup({});
   public categories$: Observable<ICategory[]> = this.categoryService.categories$;
 
   constructor(
-    private productSearchFormBuilder: ProductSearchFormBuilder,
-    private productService: ProductService,
+    private articleSearchFormBuilder: ArticleSearchFormBuilder,
+    private articleService: ArticleService,
     private categoryService: CategoryService,
     private route: ActivatedRoute
   ) {}
@@ -29,23 +29,23 @@ export class ProductSearchComponent implements OnInit {
 
   initForm() {
     this.route.queryParamMap.subscribe((params) => {
-      this.productSearchForm = this.productSearchFormBuilder.withSubmit((_form: FormGroup) => {this.submit(_form)}).build({
+      this.articleSearchForm = this.articleSearchFormBuilder.withSubmit((_form: FormGroup) => {this.submit(_form)}).build({
         category: params.get('category')
       });
-      this.submit(this.productSearchForm);
+      this.submit(this.articleSearchForm);
     })
   }
 
   get category(): AbstractControl|null {
-    return this.productSearchForm.get('category');
+    return this.articleSearchForm.get('category');
   }
 
   get search(): AbstractControl|null {
-    return this.productSearchForm.get('search');
+    return this.articleSearchForm.get('search');
   }
 
   clear() {
-    this.productSearchForm.get('search').setValue('');
+    this.articleSearchForm.get('search').setValue('');
   }
 
   submit(form: FormGroup): void
@@ -54,6 +54,6 @@ export class ProductSearchComponent implements OnInit {
       return null;
     }
 
-    this.productService.search(form.value).subscribe();
+    this.articleService.search(form.value).subscribe();
   }
 }

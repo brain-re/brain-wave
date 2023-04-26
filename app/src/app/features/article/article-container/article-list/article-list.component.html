@@ -1,13 +1,13 @@
 <div class="container-fluid mt-20">
-  <app-product-search></app-product-search>
+  <app-article-search></app-article-search>
 </div>
 
 <mat-toolbar>
   {{ title }}
 </mat-toolbar>
 <div class="d-grid">
-  <div *ngFor="let _product of products$ | async">
-    <app-product-item [routerLink]="['/product', _product._id]" [product]="_product"></app-product-item>
+  <div *ngFor="let _article of articles$ | async">
+    <app-article-item [routerLink]="['/article', _article._id]" [article]="_article"></app-article-item>
   </div>
 </div>
 
@@ -16,7 +16,7 @@
     <mat-icon>keyboard_return</mat-icon>
   </button>
 
-  <button color="primary" style="float: right;" mat-fab [routerLink]="['/product/new']">
+  <button color="primary" style="float: right;" mat-fab [routerLink]="['/article/new']">
     <mat-icon>add</mat-icon>
   </button>
 </div>

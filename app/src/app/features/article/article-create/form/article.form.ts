@@ -2,14 +2,14 @@ import { Injectable } from "@angular/core";
 import { FormGroup, Validators } from "@angular/forms";
 
 import { BaseFormBuilder } from "src/app/shared/form/base-form.builder";
-import { IProductForm } from "./product.type";
+import { IArticleForm } from "./article.type";
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductFormBuilder extends BaseFormBuilder
+export class ArticleFormBuilder extends BaseFormBuilder
 {
-  public build(data: IProductForm = {
+  public build(data: IArticleForm = {
     name: '',
     description: "",
     price: 0,

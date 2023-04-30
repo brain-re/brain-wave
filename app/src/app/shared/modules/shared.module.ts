@@ -7,6 +7,7 @@ import { ArticleListComponent } from 'src/app/features/article/article-container
 import { ArticleSearchComponent } from 'src/app/features/article/article-container/article-search/article-search.component';
 import { Pipes } from '../pipe/pipes';
 import { MaterialModule } from './material.module';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { MaterialModule } from './material.module';
     , FormsModule
     , MaterialModule
     , ReactiveFormsModule
+    , MatDialogModule
     , Pipes
     , RouterModule
   ],

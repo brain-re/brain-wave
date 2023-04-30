@@ -1,12 +1,15 @@
-<div *ngIf="!isLoading">
-  {{ article.name }}
-  <br>
-  {{ article.description }}
-  <br>
-  {{ article.image }}
-  Prix: {{ article.price }}
-  <br>
-
-  Like: {{article.liked.length}}<br>
-  Dislike: {{article.disliked.length}}
+<div mat-dialog-content>
+  <div *ngIf="(article$ | async) as article">
+    {{ article.name }}
+    <br>
+    {{ article.description }}
+    <br>
+    {{ article.image }}
+    Prix: {{ article.price }}
+    <br>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button>Add comment</button>
+  <button mat-button>Like</button>
 </div>

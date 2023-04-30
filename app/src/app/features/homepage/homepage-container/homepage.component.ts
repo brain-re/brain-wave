@@ -10,8 +10,6 @@ import { AuthService } from 'src/app/domain/auth/service/auth.service';
 })
 export class HomepageComponent implements OnInit, OnDestroy
 {
-  public last_new_title = "Dernières nouveautés"
-  public most_seen = "Produit les plus vus"
   public isConnect = false;
   public user?:string = null;
   constructor(private authService: AuthService) {}

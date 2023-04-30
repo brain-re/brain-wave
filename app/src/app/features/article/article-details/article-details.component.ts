@@ -1,34 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { IArticle } from 'src/app/logic/interfaces/article.interface';
 import { ArticleService } from 'src/app/shared/services/article.service';
+
+export interface DialogData {
+  _id: string;
+}
 
 @Component({
   selector: 'app-article-details',
   templateUrl: './article-details.component.html',
   styleUrls: ['./article-details.component.scss']
 })
-export class ArticleDetailsComponent implements OnInit {
-  public article?:IArticle = null;
-  public isLoading: boolean = true;
-  public articles$: BehaviorSubject<IArticle[]> = this.articleService.articles$;
+export class ArticleDetailsComponent implements OnInit, OnDestroy {
+  public article$: BehaviorSubject<IArticle> = new BehaviorSubject(null);
+  public subscription: Subscription = null;
 
   constructor(
     public articleService: ArticleService,
-    private route: ActivatedRoute
-  ) {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      let _id = params.get('_id');
-      this.articleService.getById(_id).pipe()
-      .subscribe((article) => {
-        this.article = article[0];
-        this.isLoading = false;
-      });
-    });
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) {}
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   ngOnInit(): void {
+    this.subscription = this.articleService.getById(this.data._id).pipe(
+      tap((article) => this.article$.next(article)),
+      tap((article) => console.log(article))
+    ).subscribe();
+  }
 
+  like () {
+    this.articleService.like(this.article$.value._id, true);
   }
 }

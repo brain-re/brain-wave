@@ -1,5 +1,6 @@
 const users = require("../../models/users.model")
 const mongoose = require("mongoose");
+mongoose.set('useFindAndModify', false);
 const articles = require("../../models/article.model");
 
 

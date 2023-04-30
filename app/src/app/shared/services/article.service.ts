@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IArticle } from '../../logic/interfaces/article.interface';
-import { debounceTime, filter, tap } from 'rxjs/operators';
+import { debounceTime, map, tap } from 'rxjs/operators';
 import { ISearchArticle } from 'src/app/features/article/article-container/article-search/form/article-search.type';
 
 const HTTP_API = '/api';
@@ -16,7 +16,7 @@ export class ArticleService {
   constructor(private http: HttpClient) {}
 
   public fetch(): Observable<IArticle[]> {
-    return this.http.get<IArticle[]>(`${HTTP_API}/articles/search`)
+    return this.http.get<IArticle[]>(`${HTTP_API}/article/search`)
         .pipe(
           tap((articles$: IArticle[]) => {
           this.articles$.next(articles$);
@@ -26,7 +26,7 @@ export class ArticleService {
 
   public search(searchArticle: ISearchArticle): Observable<IArticle[]>
   {
-    let request = `${HTTP_API}/articles/search?`;
+    let request = `${HTTP_API}/article/search?`;
     if (searchArticle.search !== null) {
       request += `name=${searchArticle.search}&`
     }
@@ -45,11 +45,36 @@ export class ArticleService {
   }
 
   public create(article: IArticle) {
-    this.http.post(`${HTTP_API}/articles/create`, article).subscribe();
+    this.http.post(`${HTTP_API}/article/create`, article).subscribe();
   }
 
   public getById(id: string): Observable<IArticle>
   {
-    return this.http.get<IArticle>(`${HTTP_API}/articles/search?_id=${id}`)
+    return this.http.get<IArticle>(`${HTTP_API}/article/search?_id=${id}`).pipe(
+      map((articles) => articles[0])
+    )
+  }
+
+  public like(article_id: string, like: boolean): Observable<IArticle>
+  {
+    return this.http.post<IArticle>(`${HTTP_API}/article/like`,
+     {like: like, article_id: article_id}
+    ).pipe<IArticle>(
+      tap((editedArticle: IArticle) => {
+        console.log(editedArticle);
+        
+        const value = this.articles$.value;
+
+        this.articles$.next(
+          value.map((article: IArticle) => {
+            if (article._id === article_id) {
+              return editedArticle;
+            } 
+            
+            return article;
+          })
+        )
+      })
+    );
   }
 }

@@ -6,7 +6,7 @@ services:
             dockerfile: Dockerfile
         ports: 
             - 4200:4200
-            - 49153:49153
+            - 4201:49153
         volumes:
             - ./app/:/usr/app/
         entrypoint: ./entrypoint.sh

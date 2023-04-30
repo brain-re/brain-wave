@@ -1,12 +1,12 @@
-<div *ngIf="!isLoading">
-  {{ article.name }}
+<div *ngIf="article">
+  <h2>{{ article.name }}</h2>
   <br>
   {{ article.description }}
   <br>
-  {{ article.image }}
-  Prix: {{ article.price }}
-  <br>
-
-  Like: {{article.liked.length}}<br>
-  Dislike: {{article.disliked.length}}
+  
+  <div>
+    <button mat-button>Add comment</button>
+    <button mat-button (click)="toggleLike()"><mat-icon>thumb_up</mat-icon> {{ article.liked?.length || 0 }}</button>
+    <button mat-button (click)="toggleDislike()"><mat-icon>thumb_down</mat-icon> {{ article.disliked?.length || 0 }}</button>
+  </div>
 </div>

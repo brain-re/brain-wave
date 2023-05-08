@@ -1,10 +1,6 @@
-<div class="container-fluid mt-20">
-  <app-article-search></app-article-search>
-</div>
-
-<div class="d-grid">
-  <div *ngFor="let _article of articles$ | async">
-    <app-article-item (click)="openDialog(_article._id)" [article]="_article"></app-article-item>
+<div class="row">
+  <div *ngFor="let _article of articles$ | async" [ngClass]="itemClasses">
+    <app-article-item (click)="selectArticle(_article._id)" [article]="_article"></app-article-item>
   </div>
 </div>
 

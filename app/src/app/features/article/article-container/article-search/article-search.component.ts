@@ -1,5 +1,5 @@
-import { Observable } from "rxjs";
-import { Component, OnInit } from '@angular/core';
+import { Observable, Subscription } from "rxjs";
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { ArticleService } from 'src/app/shared/services/article.service';
 import { ArticleSearchFormBuilder } from './form/article-search.form';
@@ -12,9 +12,10 @@ import { ActivatedRoute } from "@angular/router";
   templateUrl: './article-search.component.html',
   styleUrls: ['./article-search.component.scss']
 })
-export class ArticleSearchComponent implements OnInit {
+export class ArticleSearchComponent implements OnInit, OnDestroy {
   public articleSearchForm: FormGroup = new FormGroup({});
   public categories$: Observable<ICategory[]> = this.categoryService.categories$;
+  public subscription: Subscription;
 
   constructor(
     private articleSearchFormBuilder: ArticleSearchFormBuilder,
@@ -23,11 +24,17 @@ export class ArticleSearchComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   ngOnInit(): void {
     this.initForm();
   }
 
   initForm() {
+    this.subscription = this.categoryService.init().subscribe();
+
     this.route.queryParamMap.subscribe((params) => {
       this.articleSearchForm = this.articleSearchFormBuilder.withSubmit((_form: FormGroup) => {this.submit(_form)}).build({
         category: params.get('category')

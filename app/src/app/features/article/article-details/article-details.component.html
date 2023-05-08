@@ -1,12 +1,11 @@
-<div *ngIf="!isLoading">
-  {{ article.name }}
+<div *ngIf="article">
+  <h2>{{ article.name }}</h2>
   <br>
   {{ article.description }}
   <br>
-  {{ article.image }}
-  Prix: {{ article.price }}
-  <br>
-
-  Like: {{article.liked.length}}<br>
-  Dislike: {{article.disliked.length}}
+  
+  <div>
+    <button mat-button>Add comment</button>
+    <button mat-button>Like</button>
+  </div>
 </div>

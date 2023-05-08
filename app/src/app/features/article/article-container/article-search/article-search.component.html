@@ -17,7 +17,7 @@
   </mat-form-field>
 </form>
 <div class="row">
-  <div class="col-11 offset-1">
+  <div class="col-11">
     <div *ngFor="let err of search?.errors | keyvalue">
       <mat-error *ngIf="err.value | IsString">{{ err.value }}</mat-error>
     </div>

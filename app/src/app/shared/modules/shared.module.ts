@@ -11,9 +11,9 @@ import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
-    ArticleListComponent,
-    ArticleItemComponent,
-    ArticleSearchComponent
+    ArticleListComponent
+    , ArticleItemComponent
+    , ArticleSearchComponent
   ],
   imports: [
       CommonModule

@@ -1,4 +1,4 @@
-<mat-card >
+<mat-card style="cursor:pointer">
   <mat-card-header>
     <mat-card-title style="float: left;">{{article.name}}</mat-card-title>
   </mat-card-header>
@@ -6,7 +6,7 @@
     <p>{{article.description}}</p>
     <br>
     <span *ngIf="article.category !== undefined">
-      #{{article.category}}
+      #{{article.category.name}}
     </span>
     <span *ngIf="article.category === undefined">
       # No category

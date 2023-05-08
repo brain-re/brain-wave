@@ -12,7 +12,6 @@ export class ArticleFormBuilder extends BaseFormBuilder
   public build(data: IArticleForm = {
     name: '',
     description: "",
-    price: 0,
     category: null
   }): FormGroup
   {
@@ -31,15 +30,7 @@ export class ArticleFormBuilder extends BaseFormBuilder
           Validators.required
         ]
       ],
-      category: [data.category, []],
-      price: [
-        data.price,
-        [
-          Validators.min(0),
-          Validators.max(99999999),
-          Validators.required
-        ]
-      ]
+      category: [data.category, []]
     });
   }
 

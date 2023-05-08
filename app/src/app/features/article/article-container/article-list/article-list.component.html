@@ -1,21 +1,10 @@
-<div class="container-fluid mt-20">
-  <app-article-search></app-article-search>
-</div>
-
-<mat-toolbar>
-  {{ title }}
-</mat-toolbar>
-<div class="d-grid">
-  <div *ngFor="let _article of articles$ | async">
-    <app-article-item [routerLink]="['/article', _article._id]" [article]="_article"></app-article-item>
+<div class="row">
+  <div *ngFor="let _article of articles$ | async" [ngClass]="itemClasses">
+    <app-article-item (click)="selectArticle(_article._id)" [article]="_article"></app-article-item>
   </div>
 </div>
 
 <div class="bottom">
-  <button color="primary" style="float: left;" mat-fab routerLink="/">
-    <mat-icon>keyboard_return</mat-icon>
-  </button>
-
   <button color="primary" style="float: right;" mat-fab [routerLink]="['/article/new']">
     <mat-icon>add</mat-icon>
   </button>

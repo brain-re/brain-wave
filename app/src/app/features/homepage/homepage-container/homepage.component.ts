@@ -1,30 +1,37 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
+import { BehaviorSubject, pipe } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { jwtToken } from 'src/app/domain/auth/model/jwt-token.model';
-import { AuthService } from 'src/app/domain/auth/service/auth.service';
+import { IArticle } from 'src/app/logic/interfaces/article.interface';
+import { ArticleService } from 'src/app/shared/services/article.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.scss'],
 })
-export class HomepageComponent implements OnInit, OnDestroy
+export class HomepageComponent implements OnInit
 {
-  public last_new_title = "Dernières nouveautés"
-  public most_seen = "Produit les plus vus"
-  public isConnect = false;
-  public user?:string = null;
-  constructor(private authService: AuthService) {}
+  public listClasses !: {}
+  public selected$ : BehaviorSubject<IArticle> = new BehaviorSubject<IArticle>(null);
+
+  constructor(public articleService: ArticleService) {}
 
   ngOnInit(): void {
-    this.authService.token$.pipe(
-      tap((token: jwtToken) => {
-        if (token.isAuthenticated == true) {
-          this.user = token.token;
-        }
+    this.selected$.pipe(
+      tap((selected) => {
+          this.listClasses = {
+            "col-12": !selected,
+            "col-8": !!selected
+          }
       })
-    ).subscribe()
+    ).subscribe();
   }
 
-  ngOnDestroy(): void {}
+  selectedArticle($event: string) {
+    this.articleService.getById($event).pipe(
+      tap((article: IArticle) => this.selected$.next(article)),
+    )
+    .subscribe();
+  }
+
 }

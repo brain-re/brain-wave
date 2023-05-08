@@ -1,4 +1,9 @@
-  
-<div class="d-flex">
-    <app-article-list></app-article-list>
+<div class="container-fluid mt-20">
+    <app-article-search></app-article-search>
+</div>
+
+<div class="row">
+    <app-article-list [ngClass]="listClasses" (selectedArticle)="selectedArticle($event)"></app-article-list>
+    <app-article-details *ngIf="(selected$ | async) != null" [article]="(selected$ | async)" class="col-4"></app-article-details>
+    <app-article-details></app-article-details>
 </div>

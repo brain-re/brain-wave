@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IArticle } from 'src/app/logic/interfaces/article.interface';
-import { ArticleService } from 'src/app/shared/services/article.service';
 
 @Component({
   selector: 'app-article-details',

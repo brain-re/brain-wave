@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 mongoose.set('useFindAndModify', false);
 
 const mongodb = {
-    connect : () => 
+    connect: () => 
         mongoose
         .connect("mongodb://admin_MEAN:5698741@mongo:27017/MEAN_FR", { useNewUrlParser: true , useUnifiedTopology: true})
         .then(
@@ -13,16 +13,15 @@ const mongodb = {
                 console.log(err);
             }
         )
-    ,
-    close : () => 
+    , close: () => 
         Promise
-        .all(mongoose.connections.map((c) => c.close(true))).then(
-            () => console.log('All connections was closed')
-        )
+        .all(mongoose.connections.map((c) => c.close(true)))
+        .then(() => console.log('All connections was closed'))
         .catch((err) => {
             console.log('Error while closing connection : ');
             console.log(err);
         })
+    , drop: (collection) => mongoose.connection.dropCollection(collection).then(() => console.log(`${collection} deleted ✔️`))
 }
 
 module.exports = mongodb;

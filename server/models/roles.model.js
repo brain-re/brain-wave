@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+mongoose.set('useFindAndModify', false);
 
 const roleSchema = mongoose.Schema({
   rights: {type: String, required: true, unique: true },

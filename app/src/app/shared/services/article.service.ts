@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IArticle } from '../../logic/interfaces/article.interface';
-import { debounceTime, filter, map, tap } from 'rxjs/operators';
+import { debounceTime, map, tap } from 'rxjs/operators';
 import { ISearchArticle } from 'src/app/features/article/article-container/article-search/form/article-search.type';
 
 const HTTP_API = '/api';
@@ -55,9 +55,26 @@ export class ArticleService {
     )
   }
 
-  public like(article_id: string, like: boolean) {
-    this.http.post(`${HTTP_API}/article/like`,
+  public like(article_id: string, like: boolean): Observable<IArticle>
+  {
+    return this.http.post<IArticle>(`${HTTP_API}/article/like`,
      {like: like, article_id: article_id}
-    ).subscribe();
+    ).pipe<IArticle>(
+      tap((editedArticle: IArticle) => {
+        console.log(editedArticle);
+        
+        const value = this.articles$.value;
+
+        this.articles$.next(
+          value.map((article: IArticle) => {
+            if (article._id === article_id) {
+              return editedArticle;
+            } 
+            
+            return article;
+          })
+        )
+      })
+    );
   }
 }

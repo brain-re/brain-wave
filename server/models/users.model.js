@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+mongoose.set('useFindAndModify', false);
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 const saltRounds = 10;
